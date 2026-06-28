@@ -838,7 +838,7 @@ body {
 </div>
 
 <!-- ==================== ONBOARDING ==================== -->
-<div class="screen" id="screen-onboard">
+<div class="screen" id="screen-onboard" style="display:none">
   <div class="onboard-wave-top">
     <div style="font-size:40px">🌊</div>
     <div style="font-size:24px;font-weight:900;color:white;letter-spacing:2px">LITORAL</div>
@@ -1262,41 +1262,52 @@ function todayStr(offset=0) {
 
 // ======= LOAD =======
 window.onload = () => {
-  const saved = localStorage.getItem('litoral_state');
-  if (saved) {
-    try { Object.assign(state, JSON.parse(saved)); } catch(e){}
-  }
-  if (!state.tasks.length) state.tasks = SAMPLE_TASKS;
+  try {
+    const saved = localStorage.getItem('litoral_state');
+    if (saved) Object.assign(state, JSON.parse(saved));
+  } catch(e) { localStorage.removeItem('litoral_state'); }
+
+  if (!state.tasks || !state.tasks.length) state.tasks = SAMPLE_TASKS;
 
   setTimeout(() => {
+    hideSplash();
     if (state.user) {
       showMainApp();
     } else {
-      showScreen('onboard');
+      showPreApp('onboard');
     }
   }, 2200);
 };
 
 function save() {
-  localStorage.setItem('litoral_state', JSON.stringify(state));
+  try { localStorage.setItem('litoral_state', JSON.stringify(state)); } catch(e){}
 }
 
 // ======= SCREENS =======
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  const el = document.getElementById('screen-' + id);
-  if (el) el.classList.add('active');
+// Pre-app screens: splash, onboard (fuera de #main-app)
+function hideSplash() {
+  document.getElementById('screen-splash').style.display = 'none';
+}
+
+function showPreApp(id) {
+  document.getElementById('screen-splash').style.display = 'none';
+  document.getElementById('screen-onboard').style.display = 'flex';
+  document.getElementById('main-app').style.display = 'none';
 }
 
 function showMainApp() {
+  document.getElementById('screen-splash').style.display = 'none';
+  document.getElementById('screen-onboard').style.display = 'none';
   document.getElementById('main-app').style.display = 'block';
   updateAllUI();
   goTo('home');
 }
 
 function goTo(screen) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + screen).classList.add('active');
+  // Solo opera dentro de #main-app
+  document.querySelectorAll('#main-app .screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('screen-' + screen);
+  if (el) el.classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   const navEl = document.getElementById('nav-' + screen);
   if (navEl) navEl.classList.add('active');
@@ -1328,8 +1339,6 @@ function onboardNext() {
     state.daysActive = 1;
     save();
     showMainApp();
-    showScreen('');
-    document.getElementById('screen-onboard').classList.remove('active');
   }
 }
 
