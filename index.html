@@ -124,16 +124,13 @@ body {
 #screen-onboard {
   background: white;
 }
-.onboard-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 40px 24px 24px;
+#screen-onboard {
+  background: white;
 }
 .onboard-wave-top {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 200px;
+  position: relative;
+  width: 100%;
+  height: 180px;
   background: linear-gradient(160deg, #0B7FD4, #4ECDC4);
   border-radius: 0 0 50% 50% / 0 0 40px 40px;
   display: flex;
@@ -141,14 +138,25 @@ body {
   justify-content: center;
   flex-direction: column;
   gap: 8px;
+  flex-shrink: 0;
 }
-.onboard-steps {
+.onboard-scroll {
   flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 24px 24px 0;
+}
+.onboard-scroll::-webkit-scrollbar { display: none; }
+.onboard-steps {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 220px;
-  padding: 0 4px;
+}
+.onboard-footer {
+  padding: 16px 24px;
+  padding-bottom: max(24px, env(safe-area-inset-bottom, 24px));
+  background: white;
+  flex-shrink: 0;
 }
 .onboard-step {
   display: none;
@@ -843,7 +851,7 @@ body {
     <div style="font-size:40px">🌊</div>
     <div style="font-size:24px;font-weight:900;color:white;letter-spacing:2px">LITORAL</div>
   </div>
-  <div class="onboard-container">
+  <div class="onboard-scroll">
     <div class="onboard-steps">
 
       <!-- STEP 1 -->
@@ -898,6 +906,8 @@ body {
       <div class="dot" id="dot-2"></div>
       <div class="dot" id="dot-3"></div>
     </div>
+  </div>
+  <div class="onboard-footer">
     <button class="btn-primary" id="onboard-next-btn" onclick="onboardNext()">Continuar →</button>
   </div>
 </div>
