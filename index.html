@@ -35,7 +35,7 @@ button, input, select { font-family: 'Nunito', sans-serif; }
 
 .screen { display: none; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; }
 .screen.active { display: flex; }
-.lt-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; }
+.lt-scroll { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; }
 .lt-scroll::-webkit-scrollbar { display: none; }
 .enter-stagger > * { animation: lt-rise .5s cubic-bezier(.4,0,.2,1) both; }
 .enter-stagger > *:nth-child(1){animation-delay:.02s}.enter-stagger > *:nth-child(2){animation-delay:.07s}
@@ -579,16 +579,27 @@ function debugBadge(){
   const safeTop = cs.paddingTop;
   document.body.removeChild(probe);
   const standalone = (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true);
-  const screenEl = document.getElementById('screen-home');
-  const navEl = document.querySelector('#screen-home [style*="position:fixed"]');
-  return `<div style="position:fixed;top:8px;left:8px;right:8px;z-index:999;background:rgba(0,0,0,.85);color:#0f0;font-family:monospace;font-size:10px;padding:8px;border-radius:8px;line-height:1.6;pointer-events:none;">
+  setTimeout(()=>{
+    const mainApp = document.getElementById('main-app');
+    const screenEl = document.getElementById('screen-home');
+    const scrollEl = document.getElementById('homeRoot');
+    const navEl = document.querySelector('#screen-home > div > div[style*="position:fixed"][style*="bottom"]');
+    const out = document.getElementById('dbgExtra');
+    if (out) out.innerHTML = `
+      mainApp.offsetH: ${mainApp?mainApp.offsetHeight:'n/a'}<br>
+      screen.getBCR: top=${screenEl?Math.round(screenEl.getBoundingClientRect().top):'?'} h=${screenEl?Math.round(screenEl.getBoundingClientRect().height):'?'}<br>
+      scroll.scrollH/clientH: ${scrollEl?scrollEl.scrollHeight:'?'}/${scrollEl?scrollEl.clientHeight:'?'}<br>
+      nav.getBCR: top=${navEl?Math.round(navEl.getBoundingClientRect().top):'NOTFOUND'} bottom=${navEl?Math.round(navEl.getBoundingClientRect().bottom):'?'}
+    `;
+  }, 300);
+  return `<div style="position:fixed;top:8px;left:8px;right:8px;z-index:999;background:rgba(0,0,0,.85);color:#0f0;font-family:monospace;font-size:9.5px;padding:8px;border-radius:8px;line-height:1.55;pointer-events:none;">
     standalone: ${standalone}<br>
     safe-top: ${safeTop} | safe-bottom: ${safeBottom}<br>
     innerHeight: ${window.innerHeight} | innerWidth: ${window.innerWidth}<br>
     visualVP.height: ${window.visualViewport ? window.visualViewport.height : 'n/a'}<br>
     docEl.clientHeight: ${document.documentElement.clientHeight}<br>
-    screen.offsetHeight: ${screenEl ? screenEl.offsetHeight : 'n/a'}<br>
-    devicePixelRatio: ${window.devicePixelRatio}
+    devicePixelRatio: ${window.devicePixelRatio}<br>
+    <span id="dbgExtra" style="color:#ff0">measuring...</span>
   </div>`;
 }
 
