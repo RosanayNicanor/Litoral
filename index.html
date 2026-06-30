@@ -52,11 +52,11 @@ button, input, select { font-family: 'Nunito', sans-serif; }
 
 /* ======================= FLOW SHELL (onboarding / tour) ======================= */
 .flow-shell { background: #fff; }
-.flow-wave-top { position: relative; width: 100%; height: 168px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px; overflow: hidden; background: linear-gradient(135deg,#2BA0DD 0%,#1A86C8 55%,#0E5C8F 100%); }
+.flow-wave-top { position: relative; width: 100%; min-height: 168px; padding-top: env(safe-area-inset-top, 0px); box-sizing: border-box; flex-shrink: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px; overflow: hidden; background: linear-gradient(135deg,#2BA0DD 0%,#1A86C8 55%,#0E5C8F 100%); }
 .flow-wave-top svg.wavebottom { position: absolute; bottom: -1px; left: 0; width: 100%; height: 34px; }
 .fw-emoji { font-size: 36px; }
 .fw-brand { font-size: 21px; font-weight: 900; color: white; letter-spacing: 3px; }
-.flow-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 24px 22px 4px; }
+.flow-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 24px 22px 4px; display: flex; flex-direction: column; justify-content: center; }
 .flow-scroll::-webkit-scrollbar { display: none; }
 .flow-step { display: none; flex-direction: column; gap: 15px; animation: lt-stepin .4s cubic-bezier(.4,0,.2,1) both; }
 .flow-step.active { display: flex; }
@@ -89,12 +89,12 @@ button, input, select { font-family: 'Nunito', sans-serif; }
 .dot.active { width: 22px; background: #1A86C8; }
 .flow-footer { padding: 14px 22px; padding-bottom: max(20px, env(safe-area-inset-bottom,20px)); background: white; flex-shrink: 0; display: flex; gap: 10px; }
 
-.tour-skip { position: absolute; top: 18px; right: 18px; font-size: 12.5px; font-weight: 800; color: rgba(255,255,255,0.85); cursor: pointer; z-index: 2; padding: 6px 10px; }
+.tour-skip { position: absolute; top: calc(18px + env(safe-area-inset-top, 0px)); right: 18px; font-size: 12.5px; font-weight: 800; color: rgba(255,255,255,0.85); cursor: pointer; z-index: 2; padding: 6px 10px; }
 .tour-icon-circle { width: 96px; height: 96px; border-radius: 32px; display: flex; align-items: center; justify-content: center; font-size: 44px; margin: 6px auto 4px; }
 
 /* ======================= MAIN APP SHELL ======================= */
 #main-app { display: none; }
-#main-app .screen { background: #FBF5EC; padding-top: env(safe-area-inset-top, 0px); }
+#main-app .screen { background: #FBF5EC; }
 
 /* toast / levelup / install */
 .toast2 { position: fixed; bottom: calc(env(safe-area-inset-bottom,0px) + 92px); left: 50%; transform: translateX(-50%) translateY(14px) scale(0.95); background: #16303F; color: white; padding: 11px 20px; border-radius: 999px; font-size: 13px; font-weight: 800; opacity: 0; transition: all .3s cubic-bezier(.34,1.56,.64,1); z-index: 300; white-space: nowrap; box-shadow: 0 10px 30px rgba(22,48,63,.3); }
