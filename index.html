@@ -15,8 +15,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;1,500&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { height: 100%; }
 html, body { overscroll-behavior: none; }
-body { font-family: 'Nunito', sans-serif; background: #FBF5EC; color: #16303F; min-height: 100vh; overflow: hidden; position: fixed; width: 100%; height: 100%; }
+body { font-family: 'Nunito', sans-serif; background: #FBF5EC; color: #16303F; overflow: hidden; position: fixed; inset: 0; width: 100%; height: 100%; }
 button, input, select { font-family: 'Nunito', sans-serif; }
 @media (prefers-reduced-motion: reduce) { *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important} }
 
@@ -32,7 +33,7 @@ button, input, select { font-family: 'Nunito', sans-serif; }
 @keyframes lt-stepin { from{opacity:0;transform:translateX(16px)} to{opacity:1;transform:translateX(0)} }
 @keyframes lt-splashin { from{opacity:0;transform:scale(.92)} to{opacity:1;transform:scale(1)} }
 
-.screen { display: none; flex-direction: column; height: 100vh; overflow: hidden; }
+.screen { display: none; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; }
 .screen.active { display: flex; }
 .lt-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 .lt-scroll::-webkit-scrollbar { display: none; }
