@@ -1,5 +1,5 @@
-const CACHE = 'litoral-v1';
-const ASSETS = ['./index.html', './manifest.json'];
+const CACHE = 'litoral-v2';
+const ASSETS = ['./index.html', './manifest.json', './icon-192.png', './icon-512.png', './icon-180.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
