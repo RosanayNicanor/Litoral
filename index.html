@@ -35,7 +35,7 @@ button, input, select { font-family: 'Nunito', sans-serif; }
 
 .screen { display: none; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; }
 .screen.active { display: flex; }
-.lt-scroll { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; }
+.lt-scroll { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain; margin-bottom: calc(90px + min(env(safe-area-inset-bottom,0px),40px)); }
 .lt-scroll::-webkit-scrollbar { display: none; }
 .enter-stagger > * { animation: lt-rise .5s cubic-bezier(.4,0,.2,1) both; }
 .enter-stagger > *:nth-child(1){animation-delay:.02s}.enter-stagger > *:nth-child(2){animation-delay:.07s}
@@ -570,39 +570,6 @@ function computeBalance(){
 /* ============================================================
    HOME — porteado exacto
    ============================================================ */
-function debugBadge(){
-  const probe = document.createElement('div');
-  probe.style.cssText = 'position:fixed;bottom:0;left:0;width:1px;height:1px;padding-bottom:env(safe-area-inset-bottom,0px);padding-top:env(safe-area-inset-top,0px);visibility:hidden;';
-  document.body.appendChild(probe);
-  const cs = getComputedStyle(probe);
-  const safeBottom = cs.paddingBottom;
-  const safeTop = cs.paddingTop;
-  document.body.removeChild(probe);
-  const standalone = (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true);
-  setTimeout(()=>{
-    const mainApp = document.getElementById('main-app');
-    const screenEl = document.getElementById('screen-home');
-    const scrollEl = document.getElementById('homeRoot');
-    const navEl = document.querySelector('#screen-home > div > div[style*="position:fixed"][style*="bottom"]');
-    const out = document.getElementById('dbgExtra');
-    if (out) out.innerHTML = `
-      mainApp.offsetH: ${mainApp?mainApp.offsetHeight:'n/a'}<br>
-      screen.getBCR: top=${screenEl?Math.round(screenEl.getBoundingClientRect().top):'?'} h=${screenEl?Math.round(screenEl.getBoundingClientRect().height):'?'}<br>
-      scroll.scrollH/clientH: ${scrollEl?scrollEl.scrollHeight:'?'}/${scrollEl?scrollEl.clientHeight:'?'}<br>
-      nav.getBCR: top=${navEl?Math.round(navEl.getBoundingClientRect().top):'NOTFOUND'} bottom=${navEl?Math.round(navEl.getBoundingClientRect().bottom):'?'}
-    `;
-  }, 300);
-  return `<div style="position:fixed;top:8px;left:8px;right:8px;z-index:999;background:rgba(0,0,0,.85);color:#0f0;font-family:monospace;font-size:9.5px;padding:8px;border-radius:8px;line-height:1.55;pointer-events:none;">
-    standalone: ${standalone}<br>
-    safe-top: ${safeTop} | safe-bottom: ${safeBottom}<br>
-    innerHeight: ${window.innerHeight} | innerWidth: ${window.innerWidth}<br>
-    visualVP.height: ${window.visualViewport ? window.visualViewport.height : 'n/a'}<br>
-    docEl.clientHeight: ${document.documentElement.clientHeight}<br>
-    devicePixelRatio: ${window.devicePixelRatio}<br>
-    <span id="dbgExtra" style="color:#ff0">measuring...</span>
-  </div>`;
-}
-
 function renderHome(){
   const root = document.getElementById('homeRoot');
   const u = state.user; if(!u) return;
@@ -662,8 +629,7 @@ function renderHome(){
   }).join('');
 
   root.innerHTML = `
-    ${debugBadge()}
-    <div style="padding:env(safe-area-inset-top,0px) 22px calc(132px + min(env(safe-area-inset-bottom,0px),40px));">
+    <div style="padding:env(safe-area-inset-top,0px) 22px 24px;">
       ${statusPad()}
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-top:10px;">
         <div style="display:flex;align-items:center;gap:11px">
@@ -763,7 +729,7 @@ function renderAgenda(){
   }
 
   root.innerHTML = `
-    <div style="padding:env(safe-area-inset-top,0px) 22px calc(132px + min(env(safe-area-inset-bottom,0px),40px));">
+    <div style="padding:env(safe-area-inset-top,0px) 22px 24px;">
       ${statusPad()}
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;padding-top:10px;">
         <div style="display:flex;align-items:center;gap:12px">
@@ -846,7 +812,7 @@ function renderApoyo(){
   root.innerHTML = `
     <div style="position:relative;">
       <div style="position:absolute;top:0;left:0;right:0;height:300px;background:linear-gradient(180deg,#A99CE6 0%,#9C8CE0 100%);border-radius:0 0 38px 38px;z-index:0;"></div>
-      <div style="position:relative;z-index:2;padding:env(safe-area-inset-top,0px) 22px calc(132px + min(env(safe-area-inset-bottom,0px),40px));">
+      <div style="position:relative;z-index:2;padding:env(safe-area-inset-top,0px) 22px 24px;">
         ${statusPad()}
         <div style="color:#fff;margin:6px 2px 16px;padding-top:10px;">
           <div style="font-weight:700;font-size:13px;opacity:.85">Hola, ${u?u.name:''}</div>
@@ -955,7 +921,7 @@ function renderMascota(){
   root.innerHTML = `
     <div style="position:relative;">
       <div style="position:absolute;top:0;left:0;right:0;height:330px;background:linear-gradient(165deg,#F2C268 0%,#E8A93E 55%,#DC9526 100%);border-radius:0 0 40px 40px;z-index:0;"></div>
-      <div style="position:relative;z-index:2;padding:env(safe-area-inset-top,0px) 22px calc(132px + min(env(safe-area-inset-bottom,0px),40px));">
+      <div style="position:relative;z-index:2;padding:env(safe-area-inset-top,0px) 22px 24px;">
         ${statusPad()}
         <div style="display:flex;align-items:center;justify-content:space-between;color:#fff;margin:4px 2px 8px;padding-top:10px;">
           <span style="font-weight:800;font-size:16px">Mi mascota</span>
@@ -1025,7 +991,7 @@ function renderBienestar(){
   else if (state.bienestarTab==='tecnicas') body=bienestarTecnicas();
   else body=bienestarDocentes();
 
-  root.innerHTML = `<div style="padding:env(safe-area-inset-top,0px) 22px calc(132px + min(env(safe-area-inset-bottom,0px),40px));">
+  root.innerHTML = `<div style="padding:env(safe-area-inset-top,0px) 22px 24px;">
     ${statusPad()}
     <div style="font-weight:900;font-size:24px;letter-spacing:-.5px;color:#16303F;margin:2px 2px 14px;padding-top:10px;">Bienestar</div>
     ${tabsHtml}
