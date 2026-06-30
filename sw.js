@@ -1,4 +1,4 @@
-const CACHE = 'litoral-v3';
+const CACHE = 'litoral-v5';
 const ASSETS = ['./index.html', './manifest.json', './icon-192.png', './icon-512.png', './icon-180.png'];
 
 self.addEventListener('install', e => {
