@@ -2,1334 +2,988 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0B7FD4">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#1A86C8">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="LITORAL">
 <meta name="description" content="Tu app de bienestar académico y emocional">
 <title>LITORAL</title>
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Lora:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --ocean: #0B7FD4;
-  --ocean-dark: #0D5FA0;
-  --ocean-light: #E8F4FD;
-  --ocean-mid: #B8DDF5;
-  --teal: #4ECDC4;
-  --teal-light: #E0F7F6;
-  --text-dark: #0D2137;
-  --text-mid: #4A6480;
-  --text-soft: #8BA4BC;
-  --bg: #F7FBFF;
+  --sand: #FBF5EC;
+  --sand-deep: #F1E7D5;
   --white: #FFFFFF;
-  --card: #FFFFFF;
-  --success: #27AE60;
-  --success-light: #D5F5E3;
-  --warning: #F39C12;
-  --warning-light: #FEF9E7;
-  --danger: #E74C3C;
-  --danger-light: #FDEDEC;
-  --purple: #8E44AD;
-  --purple-light: #F4ECF7;
-  --nav-h: 68px;
-  --header-h: 0px;
-  --radius: 18px;
-  --radius-sm: 12px;
-  --shadow: 0 4px 20px rgba(11,127,212,0.10);
-  --shadow-sm: 0 2px 8px rgba(11,127,212,0.08);
+  --ink: #16303F;
+  --ink-soft: #5B7A8C;
+  --ink-mute: #9FB6C4;
+
+  --ocean: #1A86C8;
+  --ocean-deep: #0E5C8F;
+  --ocean-soft: #BFE3F7;
+  --ocean-tint: #EAF6FD;
+
+  --coral: #FF8B66;
+  --coral-tint: #FFEAE0;
+  --coral-red: #F2604C;
+  --coral-red-tint: #FDE6E2;
+  --lavender: #9C8CE0;
+  --lavender-deep: #6E5DC2;
+  --lavender-tint: #EFEAFC;
+  --teal: #45B8A6;
+  --teal-deep: #2E9485;
+  --teal-tint: #DEF6F1;
+  --gold: #E8A93E;
+  --gold-deep: #C68A24;
+  --gold-tint: #FBEFD7;
+  --success: #4FBF7A;
+  --success-tint: #E3F6E9;
+
+  --r-lg: 26px;
+  --r-md: 18px;
+  --r-sm: 13px;
+  --r-pill: 999px;
+
+  --shadow-sm: 0 2px 14px rgba(22,48,63,0.07);
+  --shadow-md: 0 10px 30px rgba(22,48,63,0.10);
+  --shadow-ocean: 0 10px 26px rgba(26,134,200,0.28);
+
+  --nav-h: 72px;
+  --ease: cubic-bezier(.4,0,.2,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { overscroll-behavior: none; }
+body { font-family: 'Nunito', sans-serif; background: var(--sand); color: var(--ink); min-height: 100vh; overflow: hidden; position: fixed; width: 100%; height: 100%; }
+button, input, select { font-family: 'Nunito', sans-serif; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; } }
 
-body {
-  font-family: 'Nunito', sans-serif;
-  background: var(--bg);
-  color: var(--text-dark);
-  min-height: 100vh;
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-}
-
-/* ======= SCREENS ======= */
-.screen {
-  display: none;
-  flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
-}
+.screen { display: none; flex-direction: column; height: 100vh; overflow: hidden; }
 .screen.active { display: flex; }
-
-.scroll-area {
-  flex: 1;
-  overflow-y: auto;
-  padding: 0 16px 88px;
-  -webkit-overflow-scrolling: touch;
-}
+.scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 18px calc(var(--nav-h) + 28px); }
 .scroll-area::-webkit-scrollbar { display: none; }
 
-/* ======= SPLASH ======= */
-#screen-splash {
-  background: linear-gradient(160deg, #0B7FD4 0%, #0563AC 50%, #0D2137 100%);
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-}
-.splash-logo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  animation: splashIn 0.8s ease both;
-}
-.splash-wave {
-  font-size: 64px;
-  line-height: 1;
-}
-.splash-title {
-  font-size: 52px;
-  font-weight: 900;
-  color: white;
-  letter-spacing: 4px;
-}
-.splash-sub {
-  font-size: 14px;
-  color: rgba(255,255,255,0.7);
-  text-align: center;
-  max-width: 220px;
-  line-height: 1.5;
-}
-.splash-loader {
-  width: 48px;
-  height: 4px;
-  background: rgba(255,255,255,0.2);
-  border-radius: 2px;
-  overflow: hidden;
-  margin-top: 16px;
-}
-.splash-loader-fill {
-  height: 100%;
-  background: white;
-  border-radius: 2px;
-  animation: loadBar 2s ease forwards;
-}
-@keyframes loadBar { from { width: 0 } to { width: 100% } }
-@keyframes splashIn { from { opacity: 0; transform: translateY(20px) } to { opacity: 1; transform: translateY(0) } }
+@keyframes riseIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+.enter-stagger > * { animation: riseIn .55s var(--ease) both; }
+.enter-stagger > *:nth-child(1){animation-delay:.02s}.enter-stagger > *:nth-child(2){animation-delay:.08s}
+.enter-stagger > *:nth-child(3){animation-delay:.14s}.enter-stagger > *:nth-child(4){animation-delay:.20s}
+.enter-stagger > *:nth-child(5){animation-delay:.26s}.enter-stagger > *:nth-child(n+6){animation-delay:.32s}
 
-/* ======= ONBOARDING ======= */
-#screen-onboard {
-  background: white;
-}
-#screen-onboard {
-  background: white;
-}
-.onboard-wave-top {
-  position: relative;
-  width: 100%;
-  height: 180px;
-  background: linear-gradient(160deg, #0B7FD4, #4ECDC4);
-  border-radius: 0 0 50% 50% / 0 0 40px 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 8px;
-  flex-shrink: 0;
-}
-.onboard-scroll {
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 24px 24px 0;
-}
-.onboard-scroll::-webkit-scrollbar { display: none; }
-.onboard-steps {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.onboard-footer {
-  padding: 16px 24px;
-  padding-bottom: max(24px, env(safe-area-inset-bottom, 24px));
-  background: white;
-  flex-shrink: 0;
-}
-.onboard-step {
-  display: none;
-  flex-direction: column;
-  gap: 16px;
-  animation: fadeSlide 0.4s ease both;
-}
-.onboard-step.active { display: flex; }
-@keyframes fadeSlide { from { opacity: 0; transform: translateX(20px) } to { opacity: 1; transform: translateX(0) } }
+/* ======================= SPLASH ======================= */
+#screen-splash { background: radial-gradient(120% 100% at 30% 0%, #2BA0DD 0%, #156BA3 48%, #0C4A78 100%); align-items: center; justify-content: center; }
+.splash-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; animation: splashIn .9s var(--ease) both; }
+.splash-ring { width: 96px; height: 96px; border-radius: 50%; background: rgba(255,255,255,0.14); display: flex; align-items: center; justify-content: center; font-size: 44px; margin-bottom: 6px; animation: bob 2.6s ease-in-out infinite; }
+.splash-title { font-size: 44px; font-weight: 900; color: white; letter-spacing: 5px; }
+.splash-sub { font-size: 13.5px; color: rgba(255,255,255,0.72); text-align: center; max-width: 230px; line-height: 1.5; font-weight: 600; margin-top: 2px; }
+.splash-loader { width: 120px; height: 4px; background: rgba(255,255,255,0.18); border-radius: 4px; overflow: hidden; margin-top: 22px; }
+.splash-loader-fill { height: 100%; background: white; border-radius: 4px; width: 0%; transition: width 1.6s var(--ease); }
+@keyframes splashIn { from { opacity:0; transform:scale(.92);} to { opacity:1; transform:scale(1);} }
+@keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 
-.onboard-emoji { font-size: 48px; text-align: center; }
-.onboard-h { font-size: 24px; font-weight: 800; color: var(--text-dark); text-align: center; }
-.onboard-p { font-size: 15px; color: var(--text-mid); text-align: center; line-height: 1.6; }
+/* ======================= SHARED: onboarding / tour shell ======================= */
+.flow-shell { background: var(--white); }
+.flow-wave-top { position: relative; width: 100%; height: 168px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px; overflow: hidden; }
+.flow-wave-top svg { position: absolute; bottom: -1px; left: 0; width: 100%; height: 34px; }
+.fw-ocean { background: linear-gradient(135deg, #2BA0DD 0%, var(--ocean) 55%, var(--ocean-deep) 100%); }
+.fw-emoji { font-size: 36px; }
+.fw-brand { font-size: 21px; font-weight: 900; color: white; letter-spacing: 3px; }
+.flow-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 24px 22px 4px; }
+.flow-scroll::-webkit-scrollbar { display: none; }
+.flow-step { display: none; flex-direction: column; gap: 15px; animation: stepIn .4s var(--ease) both; }
+.flow-step.active { display: flex; }
+@keyframes stepIn { from{opacity:0;transform:translateX(16px)} to{opacity:1;transform:translateX(0)} }
+.flow-emoji { font-size: 40px; text-align: center; }
+.flow-h { font-size: 21px; font-weight: 900; color: var(--ink); text-align: center; }
+.flow-p { font-size: 13.5px; color: var(--ink-soft); text-align: center; line-height: 1.55; font-weight: 600; }
+.flow-footer { padding: 14px 22px; padding-bottom: max(20px, env(safe-area-inset-bottom,20px)); background: white; flex-shrink: 0; display: flex; gap: 10px; }
 
-.input-group { display: flex; flex-direction: column; gap: 8px; }
-.input-label { font-size: 13px; font-weight: 700; color: var(--text-mid); letter-spacing: 0.5px; }
-.inp {
-  width: 100%;
-  padding: 14px 16px;
-  border: 2px solid var(--ocean-mid);
-  border-radius: var(--radius-sm);
-  font-family: 'Nunito', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-dark);
-  background: var(--ocean-light);
-  outline: none;
-  transition: border-color 0.2s;
-}
-.inp:focus { border-color: var(--ocean); background: white; }
+.input-group { display: flex; flex-direction: column; gap: 7px; }
+.input-label { font-size: 11px; font-weight: 800; color: var(--ink-soft); letter-spacing: 0.6px; text-transform: uppercase; }
+.inp { width: 100%; padding: 14px 16px; border: 2px solid var(--ocean-soft); border-radius: var(--r-sm); font-size: 15px; font-weight: 700; color: var(--ink); background: var(--ocean-tint); outline: none; transition: all .2s var(--ease); }
+.inp:focus { border-color: var(--ocean); background: white; box-shadow: 0 0 0 4px var(--ocean-tint); }
 
-.zodiac-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-}
-.zodiac-btn {
-  background: var(--ocean-light);
-  border: 2px solid transparent;
-  border-radius: 12px;
-  padding: 10px 4px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.zodiac-btn:active { transform: scale(0.95); }
-.zodiac-btn.sel { border-color: var(--ocean); background: white; }
-.zodiac-emoji { font-size: 22px; }
-.zodiac-name { font-size: 9px; font-weight: 700; color: var(--text-mid); }
+.zodiac-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; }
+.zodiac-btn { background: var(--sand); border: 2px solid transparent; border-radius: 14px; padding: 11px 4px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; transition: all .18s var(--ease); }
+.zodiac-btn:active { transform: scale(0.93); }
+.zodiac-btn.sel { border-color: var(--ocean); background: var(--ocean-tint); transform: scale(1.04); box-shadow: var(--shadow-sm); }
+.zodiac-emoji { font-size: 21px; }
+.zodiac-name { font-size: 8.5px; font-weight: 800; color: var(--ink-soft); }
 
-.btn-primary {
-  width: 100%;
-  padding: 16px;
-  background: var(--ocean);
-  color: white;
-  border: none;
-  border-radius: var(--radius);
-  font-family: 'Nunito', sans-serif;
-  font-size: 16px;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-top: auto;
-}
-.btn-primary:active { transform: scale(0.98); background: var(--ocean-dark); }
-.btn-primary:disabled { opacity: 0.5; }
+.btn-primary { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--ocean), var(--ocean-deep)); color: white; border: none; border-radius: var(--r-pill); font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: var(--shadow-ocean); transition: all .15s var(--ease); }
+.btn-primary:active { transform: scale(0.97); }
+.btn-ghost { padding: 16px 18px; background: var(--sand); color: var(--ink-soft); border: none; border-radius: var(--r-pill); font-size: 14px; font-weight: 800; cursor: pointer; }
+.btn-ghost:active { transform: scale(0.95); }
 
-.dot-nav {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin: 16px 0;
-}
-.dot { width: 8px; height: 8px; border-radius: 4px; background: var(--ocean-mid); transition: all 0.3s; }
-.dot.active { width: 24px; background: var(--ocean); }
+.dot-nav { display: flex; justify-content: center; gap: 7px; margin: 16px 0 14px; }
+.dot { width: 7px; height: 7px; border-radius: 4px; background: var(--ocean-soft); transition: all .35s var(--ease-spring); }
+.dot.active { width: 22px; background: var(--ocean); }
 
-/* ======= BOTTOM NAV ======= */
-.bottom-nav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  height: var(--nav-h);
-  background: white;
-  border-top: 1.5px solid var(--ocean-light);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 0 8px;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-  z-index: 100;
-  box-shadow: 0 -4px 20px rgba(11,127,212,0.08);
-}
-.nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  padding: 8px 12px;
-  border-radius: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-  flex: 1;
-}
-.nav-item:active { transform: scale(0.92); }
-.nav-icon { font-size: 22px; line-height: 1; transition: transform 0.2s; }
-.nav-label { font-size: 10px; font-weight: 700; color: var(--text-soft); transition: color 0.2s; }
-.nav-item.active .nav-label { color: var(--ocean); }
-.nav-item.active .nav-icon { transform: scale(1.15); }
+/* ======================= TOUR ======================= */
+#screen-tour .flow-wave-top { background: linear-gradient(135deg, #2BA0DD, var(--ocean) 55%, var(--ocean-deep)); }
+.tour-skip { position: absolute; top: 18px; right: 18px; font-size: 12.5px; font-weight: 800; color: rgba(255,255,255,0.85); cursor: pointer; z-index: 2; padding: 6px 10px; }
+.tour-icon-circle { width: 96px; height: 96px; border-radius: 32px; display: flex; align-items: center; justify-content: center; font-size: 44px; margin: 6px auto 4px; }
+.tour-mini-mock { background: var(--sand); border-radius: var(--r-lg); padding: 14px; margin-top: 4px; }
 
-/* ======= WAVE HEADER ======= */
-.wave-header {
-  position: relative;
-  background: linear-gradient(135deg, var(--ocean) 0%, #0563AC 100%);
-  padding: 48px 20px 60px;
-  color: white;
-  overflow: hidden;
-}
-.wave-header::after {
-  content: '';
-  position: absolute;
-  bottom: -2px; left: -5%; right: -5%;
-  height: 40px;
-  background: var(--bg);
-  border-radius: 50% 50% 0 0;
-}
-.wave-header-teal {
-  background: linear-gradient(135deg, var(--teal) 0%, #38B8B0 100%);
-}
-.wave-header-purple {
-  background: linear-gradient(135deg, var(--purple) 0%, #6C3483 100%);
-}
-.wave-header-gold {
-  background: linear-gradient(135deg, #F39C12 0%, #D68910 100%);
-}
-.wave-header-green {
-  background: linear-gradient(135deg, var(--success) 0%, #1E8449 100%);
-}
-.wh-greeting { font-size: 13px; font-weight: 600; opacity: 0.8; margin-bottom: 4px; }
-.wh-title { font-size: 22px; font-weight: 800; }
-.wh-sub { font-size: 13px; opacity: 0.75; margin-top: 4px; }
+/* ======================= BOTTOM NAV ======================= */
+.bottom-nav { position: fixed; bottom: 14px; left: 14px; right: 14px; height: 64px; background: var(--ink); border-radius: var(--r-pill); display: flex; align-items: center; justify-content: space-around; padding: 0 6px; z-index: 100; box-shadow: 0 14px 32px rgba(22,48,63,0.32); }
+.nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; transition: all .25s var(--ease); position: relative; }
+.nav-item:active { transform: scale(0.88); }
+.nav-icon { font-size: 19px; line-height: 1; opacity: 0.55; transition: all .25s var(--ease); filter: grayscale(1); }
+.nav-item.active .nav-icon { opacity: 1; filter: grayscale(0); transform: scale(1.1); }
+.nav-item.active { background: rgba(255,255,255,0.10); }
+.nav-fab { width: 58px; height: 58px; border-radius: 50%; background: linear-gradient(135deg, #B8A9F0, var(--lavender)); display: flex; align-items: center; justify-content: center; font-size: 24px; margin-top: -30px; box-shadow: 0 10px 22px rgba(156,140,224,0.45); cursor: pointer; transition: all .2s var(--ease-spring); border: 4px solid var(--sand); }
+.nav-fab:active { transform: scale(0.9); }
 
-/* ======= CARDS ======= */
-.card {
-  background: var(--card);
-  border-radius: var(--radius);
-  padding: 16px;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 12px;
-}
-.card-title {
-  font-size: 13px;
-  font-weight: 800;
-  color: var(--text-mid);
-  letter-spacing: 0.5px;
-  margin-bottom: 12px;
-  text-transform: uppercase;
-}
+/* ======================= CARD / LIST PRIMITIVES (reused across screens) ======================= */
+.card { background: var(--white); border-radius: var(--r-lg); padding: 18px; box-shadow: var(--shadow-sm); margin-bottom: 13px; }
+.card-title { font-size: 12px; font-weight: 900; color: var(--ink-soft); letter-spacing: 0.4px; margin-bottom: 13px; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between; }
+.section-h2 { font-size: 16px; font-weight: 900; color: var(--ink); margin: 20px 0 11px; display: flex; align-items: center; justify-content: space-between; }
+.section-link { font-size: 12.5px; font-weight: 800; color: var(--ocean); cursor: pointer; }
+.divider2 { height: 1px; background: var(--sand-deep); margin: 4px 0 18px; }
 
-/* ======= MASCOTA CARD HOME ======= */
-.mascota-home-card {
-  background: linear-gradient(135deg, var(--ocean-light), #D6ECFA);
-  border-radius: var(--radius);
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-.mascota-home-card:active { transform: scale(0.98); }
-.mascota-big { font-size: 52px; line-height: 1; flex-shrink: 0; }
-.mascota-home-info { flex: 1; }
-.mascota-home-name { font-size: 16px; font-weight: 800; color: var(--ocean-dark); }
-.mascota-home-level { font-size: 12px; color: var(--text-mid); font-weight: 600; margin-top: 2px; }
-.xp-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
-.xp-bar { flex: 1; height: 8px; background: var(--ocean-mid); border-radius: 4px; overflow: hidden; }
-.xp-fill { height: 100%; background: var(--ocean); border-radius: 4px; transition: width 0.6s ease; }
-.xp-label { font-size: 11px; font-weight: 700; color: var(--ocean); }
+.stat-row { display: flex; align-items: center; gap: 12px; padding: 11px 4px; cursor: pointer; }
+.stat-row + .stat-row { border-top: 1px solid var(--sand); }
+.stat-icon { width: 36px; height: 36px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.stat-mid { flex: 1; min-width: 0; }
+.stat-label { font-size: 13px; font-weight: 800; color: var(--ink); }
+.stat-bar-bg { height: 6px; background: var(--sand); border-radius: 4px; margin-top: 6px; overflow: hidden; }
+.stat-bar-fill { height: 100%; border-radius: 4px; transition: width 1s var(--ease-spring); }
+.stat-val { font-size: 13.5px; font-weight: 900; color: var(--ink); flex-shrink: 0; }
 
-/* ======= TAREAS ======= */
-.task-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  background: white;
-  border-radius: var(--radius-sm);
-  margin-bottom: 8px;
-  border-left: 4px solid var(--ocean);
-  box-shadow: var(--shadow-sm);
-  cursor: pointer;
-  transition: transform 0.15s;
-}
-.task-item:active { transform: scale(0.98); }
-.task-item.urgente { border-left-color: var(--danger); }
-.task-item.completada { border-left-color: var(--success); opacity: 0.6; }
-.task-item.completada .task-name { text-decoration: line-through; }
-.task-check-btn {
-  width: 24px; height: 24px;
-  border-radius: 50%;
-  border: 2.5px solid var(--ocean);
-  flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s;
-  cursor: pointer;
-  background: white;
-}
-.task-check-btn.done { background: var(--success); border-color: var(--success); }
-.task-check-btn.done::after { content: '✓'; color: white; font-size: 13px; font-weight: 800; }
-.task-urgente .task-check-btn { border-color: var(--danger); }
-.task-info { flex: 1; }
-.task-name { font-size: 14px; font-weight: 700; color: var(--text-dark); }
-.task-meta { font-size: 11px; color: var(--text-soft); margin-top: 2px; font-weight: 600; }
-.badge {
-  font-size: 10px;
-  font-weight: 800;
-  padding: 3px 9px;
-  border-radius: 20px;
-  white-space: nowrap;
-}
-.badge-danger { background: var(--danger-light); color: var(--danger); }
-.badge-warning { background: var(--warning-light); color: var(--warning); }
-.badge-success { background: var(--success-light); color: var(--success); }
-.badge-ocean { background: var(--ocean-light); color: var(--ocean); }
+.empty-state { text-align: center; padding: 26px 18px; }
+.empty-emoji { font-size: 42px; margin-bottom: 10px; display: block; }
+.empty-title { font-size: 14.5px; font-weight: 900; color: var(--ink); }
+.empty-text { font-size: 12.5px; font-weight: 700; color: var(--ink-mute); margin-top: 4px; line-height: 1.5; }
+.empty-cta { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; padding: 11px 20px; border-radius: var(--r-pill); font-size: 13px; font-weight: 800; cursor: pointer; border: none; }
 
-/* ======= ESTADO RÁPIDO ======= */
-.quick-emotions {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-}
-.quick-emotions::-webkit-scrollbar { display: none; }
-.quick-em-btn {
-  flex-shrink: 0;
-  background: var(--ocean-light);
-  border: 2px solid transparent;
-  border-radius: 20px;
-  padding: 8px 14px;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-mid);
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
-.quick-em-btn:active { transform: scale(0.96); }
-.quick-em-btn.sel { border-color: var(--ocean); background: white; color: var(--ocean); }
+/* ======================= HOME — minimal chrome, ring is the hero ======================= */
+.home-topbar { display: flex; align-items: center; gap: 12px; padding: 20px 18px 4px; flex-shrink: 0; }
+.home-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--ocean-tint); display: flex; align-items: center; justify-content: center; font-size: 21px; flex-shrink: 0; }
+.home-greet { flex: 1; min-width: 0; }
+.home-greeting { font-size: 11.5px; font-weight: 700; color: var(--ink-mute); }
+.home-name { font-size: 17px; font-weight: 900; color: var(--ink); margin-top: 1px; }
+.home-streak { display: flex; align-items: center; gap: 4px; background: var(--gold-tint); color: var(--gold-deep); border-radius: var(--r-pill); padding: 7px 12px; font-size: 12.5px; font-weight: 900; flex-shrink: 0; }
 
-/* ======= AGENDA ======= */
-.week-strip {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 16px;
-}
-.day-pill {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 8px 4px;
-  border-radius: 12px;
-  background: var(--ocean-light);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.day-pill.today { background: var(--ocean); }
-.day-pill.today .day-num, .day-pill.today .day-name { color: white; }
-.day-num { font-size: 16px; font-weight: 800; color: var(--text-dark); }
-.day-name { font-size: 10px; font-weight: 700; color: var(--text-soft); }
+.ring-hero { text-align: center; padding: 8px 0 4px; }
+.ring-wrap { position: relative; width: 220px; height: 220px; margin: 6px auto 4px; }
+.ring-wrap svg { width: 100%; height: 100%; }
+.ring-seg { transition: stroke-dashoffset 1.1s var(--ease-spring); }
+.ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.ring-num { font-size: 50px; font-weight: 900; color: var(--ink); line-height: 1; letter-spacing: -1.5px; }
+.ring-lbl { font-size: 12px; font-weight: 800; color: var(--ink-mute); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+.ring-caption { font-size: 13px; font-weight: 700; color: var(--ink-soft); margin-top: 6px; padding: 0 30px; line-height: 1.5; }
 
-.add-task-btn {
-  width: 100%;
-  padding: 14px;
-  background: transparent;
-  border: 2px dashed var(--ocean-mid);
-  border-radius: var(--radius);
-  font-family: 'Nunito', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--ocean);
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 4px;
-}
-.add-task-btn:active { background: var(--ocean-light); }
+.ring-legend { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 14px; }
+.ring-legend-item { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 10px 2px; border-radius: 14px; cursor: pointer; transition: background .2s; background: var(--white); box-shadow: var(--shadow-sm); }
+.ring-legend-item:active { transform: scale(0.95); }
+.ring-dot { width: 9px; height: 9px; border-radius: 50%; }
+.ring-legend-lbl { font-size: 9.5px; font-weight: 800; color: var(--ink-soft); text-align: center; line-height: 1.2; }
 
-/* ======= MODAL AGREGAR TAREA ======= */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(13,33,55,0.6);
-  z-index: 200;
-  align-items: flex-end;
-  backdrop-filter: blur(4px);
-}
-.modal-overlay.open { display: flex; }
-.modal-sheet {
-  background: white;
-  border-radius: 28px 28px 0 0;
-  padding: 24px 20px 40px;
-  width: 100%;
-  animation: slideUp 0.3s ease both;
-}
-@keyframes slideUp { from { transform: translateY(100%) } to { transform: translateY(0) } }
-.modal-handle {
-  width: 40px; height: 4px;
-  background: var(--ocean-mid);
-  border-radius: 2px;
-  margin: 0 auto 20px;
-}
-.modal-title { font-size: 18px; font-weight: 800; color: var(--text-dark); margin-bottom: 16px; }
-.input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.assistant-band { position: relative; border-radius: var(--r-lg); padding: 16px; margin: 18px 0 4px; overflow: hidden; display: flex; gap: 13px; align-items: flex-start; background: linear-gradient(120deg, var(--ocean-tint), var(--teal-tint)); }
+.assistant-blob { position: absolute; top: -30px; right: -30px; width: 110px; height: 110px; border-radius: 50%; background: radial-gradient(circle, rgba(26,134,200,0.10), transparent 70%); }
+.assistant-avatar { width: 46px; height: 46px; border-radius: 50%; background: white; box-shadow: var(--shadow-sm); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; z-index: 1; }
+.assistant-body { flex: 1; z-index: 1; min-width: 0; }
+.assistant-label { font-size: 10px; font-weight: 900; color: var(--ocean-deep); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.assistant-msg { font-size: 13px; font-weight: 700; color: var(--ink); line-height: 1.45; }
+.assistant-cta { display: inline-flex; align-items: center; gap: 4px; margin-top: 10px; padding: 7px 14px; background: var(--ink); color: white; border-radius: var(--r-pill); font-size: 11.5px; font-weight: 800; cursor: pointer; border: none; }
 
-/* ======= APOYO EMOCIONAL ======= */
-.emotion-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-bottom: 4px;
-}
-.em-btn {
-  background: var(--ocean-light);
-  border: 2px solid transparent;
-  border-radius: 14px;
-  padding: 14px 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.em-btn:active { transform: scale(0.95); }
-.em-btn.sel { border-color: var(--teal); background: var(--teal-light); }
-.em-emoji { font-size: 28px; }
-.em-label { font-size: 11px; font-weight: 700; color: var(--text-mid); }
+.mood-row { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 4px; }
+.mood-row::-webkit-scrollbar { display: none; }
+.mood-pill { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; transition: transform .15s var(--ease-spring); }
+.mood-pill:active { transform: scale(0.9); }
+.mood-pill-icon { width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 22px; border: 2.5px solid transparent; transition: all .2s var(--ease); background: white; box-shadow: var(--shadow-sm); }
+.mood-pill.sel .mood-pill-icon { border-color: var(--ink); transform: scale(1.08); }
+.mood-pill-lbl { font-size: 9.5px; font-weight: 800; color: var(--ink-soft); }
 
-.chat-area {
-  background: var(--teal-light);
-  border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 12px;
-}
-.chat-mascota-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-.chat-av { font-size: 32px; flex-shrink: 0; }
-.chat-bubble {
-  background: white;
-  border-radius: 4px 16px 16px 16px;
-  padding: 10px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-dark);
-  line-height: 1.5;
-  flex: 1;
-  box-shadow: var(--shadow-sm);
-  transition: opacity 0.3s;
-}
-.chat-label { font-size: 11px; font-weight: 800; color: var(--teal); margin-bottom: 4px; }
+/* ======================= AGENDA — giant date hero ======================= */
+.agenda-hero { padding: 22px 20px 18px; flex-shrink: 0; background: var(--white); border-bottom: 1px solid var(--sand-deep); }
+.agenda-hero-top { display: flex; align-items: baseline; justify-content: space-between; }
+.agenda-eyebrow { font-size: 11.5px; font-weight: 900; color: var(--coral); text-transform: uppercase; letter-spacing: 0.6px; }
+.agenda-month-lbl { font-size: 13px; font-weight: 800; color: var(--ink-mute); }
+.agenda-day-num { font-size: 56px; font-weight: 900; color: var(--ink); line-height: 0.95; letter-spacing: -2px; margin-top: 2px; }
+.agenda-day-name { font-size: 15px; font-weight: 800; color: var(--ink-soft); margin-bottom: 2px; }
 
-.breath-card {
-  background: white;
-  border-radius: var(--radius);
-  padding: 20px;
-  text-align: center;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 12px;
-}
-.breath-circle {
-  width: 80px; height: 80px;
-  border-radius: 50%;
-  background: var(--teal-light);
-  border: 3px solid var(--teal);
-  margin: 12px auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  cursor: pointer;
-  transition: transform 0.5s ease;
-}
-.breath-circle.inhale { transform: scale(1.3); }
-.breath-circle.exhale { transform: scale(0.85); }
-.breath-text { font-size: 13px; font-weight: 700; color: var(--teal); margin-top: 8px; }
+.date-pill-row { display: flex; gap: 6px; margin: 16px 0; }
+.date-pill { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 9px 2px; border-radius: 15px; background: var(--sand); border: 2px solid transparent; cursor: pointer; transition: all .2s var(--ease); }
+.date-pill.today-ring { border-color: var(--coral); }
+.date-pill.sel { background: var(--ink); border-color: var(--ink); }
+.dp-num { font-size: 15px; font-weight: 900; color: var(--ink); }
+.dp-day { font-size: 9px; font-weight: 800; color: var(--ink-mute); text-transform: uppercase; }
+.date-pill.sel .dp-num, .date-pill.sel .dp-day { color: white; }
 
-.tips-list { display: flex; flex-direction: column; gap: 8px; }
-.tip-item {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  padding: 12px;
-  background: var(--purple-light);
-  border-radius: var(--radius-sm);
-}
-.tip-icon { font-size: 20px; flex-shrink: 0; }
-.tip-text { font-size: 13px; font-weight: 600; color: var(--text-dark); line-height: 1.4; }
+.tabs-row { display: flex; gap: 8px; margin-bottom: 14px; }
+.tab-pill2 { padding: 9px 16px; border-radius: var(--r-pill); font-size: 12.5px; font-weight: 800; color: var(--ink-soft); background: var(--white); border: 2px solid var(--sand-deep); cursor: pointer; transition: all .2s var(--ease); }
+.tab-pill2.active { background: var(--ink); color: white; border-color: var(--ink); }
 
-/* ======= MASCOTA PANTALLA ======= */
-.mascota-hero {
-  text-align: center;
-  padding: 20px 0 8px;
-}
-.mascota-mega { font-size: 88px; line-height: 1; display: block; animation: float 3s ease-in-out infinite; }
-@keyframes float {
-  0%, 100% { transform: translateY(0px) }
-  50% { transform: translateY(-8px) }
-}
-.mascota-hero-name { font-size: 24px; font-weight: 900; color: white; margin-top: 8px; }
-.mascota-hero-level { font-size: 13px; color: rgba(255,255,255,0.8); font-weight: 600; }
+.timeline-row { display: flex; gap: 11px; margin-bottom: 11px; }
+.tl-time { width: 46px; flex-shrink: 0; padding-top: 13px; text-align: right; font-size: 11.5px; font-weight: 800; color: var(--ink-mute); }
+.tl-card { flex: 1; background: white; border-radius: var(--r-md); padding: 13px 14px; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 11px; cursor: pointer; transition: transform .15s var(--ease); border-left: 4px solid var(--ocean); }
+.tl-card:active { transform: scale(0.98); }
+.tl-card.p-urgente { border-left-color: var(--coral-red); }
+.tl-card.p-examen { border-left-color: var(--gold); }
+.tl-card.done { opacity: 0.55; }
+.tl-card.done .tl-name { text-decoration: line-through; }
+.tl-icon { width: 34px; height: 34px; border-radius: 10px; background: var(--ocean-tint); display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+.tl-info { flex: 1; min-width: 0; }
+.tl-name { font-size: 13.5px; font-weight: 800; color: var(--ink); }
+.tl-meta { font-size: 11px; color: var(--ink-mute); font-weight: 700; margin-top: 2px; }
+.tl-check { width: 25px; height: 25px; border-radius: 50%; border: 2.5px solid var(--ocean); flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; background: white; transition: all .2s var(--ease-spring); }
+.tl-check.done-c { background: var(--success); border-color: var(--success); transform: scale(1.05); }
+.tl-check.done-c::after { content: '✓'; color: white; font-size: 13px; font-weight: 900; }
 
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-bottom: 12px;
-}
-.stat-card {
-  background: white;
-  border-radius: var(--radius-sm);
-  padding: 12px 8px;
-  text-align: center;
-  box-shadow: var(--shadow-sm);
-}
-.stat-val { font-size: 22px; font-weight: 900; color: var(--ocean); }
-.stat-lbl { font-size: 10px; font-weight: 700; color: var(--text-soft); margin-top: 2px; }
+.fab-add { position: fixed; right: 18px; bottom: calc(var(--nav-h) + 28px); width: 54px; height: 54px; border-radius: 50%; background: var(--ink); color: white; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 10px 24px rgba(22,48,63,0.3); cursor: pointer; z-index: 90; transition: transform .2s var(--ease-spring); }
+.fab-add:active { transform: scale(0.88) rotate(90deg); }
 
-.evo-timeline { display: flex; flex-direction: column; gap: 0; }
-.evo-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  background: white;
-  border-radius: var(--radius-sm);
-  margin-bottom: 8px;
-  box-shadow: var(--shadow-sm);
-  position: relative;
-}
-.evo-item.current { border: 2px solid var(--ocean); }
-.evo-item.locked { opacity: 0.45; }
-.evo-dot-wrap { display: flex; flex-direction: column; align-items: center; }
-.evo-animal { font-size: 28px; }
-.evo-info { flex: 1; }
-.evo-name { font-size: 14px; font-weight: 800; color: var(--text-dark); }
-.evo-req { font-size: 11px; color: var(--text-soft); font-weight: 600; margin-top: 2px; }
-.evo-badge {
-  font-size: 10px;
-  font-weight: 800;
-  padding: 4px 10px;
-  border-radius: 20px;
-}
-.evo-badge-current { background: var(--ocean-light); color: var(--ocean); }
-.evo-badge-locked { background: #F0F0F0; color: #999; }
+/* ======================= APOYO — mood selector lives ON the gradient ======================= */
+.apoyo-hero { padding: 26px 20px 26px; flex-shrink: 0; position: relative; overflow: hidden; background: linear-gradient(150deg, #BCAFF0 0%, var(--lavender) 55%, var(--lavender-deep) 100%); }
+.apoyo-hero svg.wave-bottom { position: absolute; bottom: -1px; left: 0; width: 100%; height: 26px; }
+.apoyo-greet-row { display: flex; align-items: center; gap: 10px; color: white; }
+.apoyo-avatar { width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.22); border: 2px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.apoyo-greet-name { font-size: 12.5px; font-weight: 700; opacity: 0.85; }
+.apoyo-question { font-size: 19px; font-weight: 900; }
 
-.xp-ways { display: flex; flex-direction: column; gap: 6px; }
-.xp-way {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  background: var(--ocean-light);
-  border-radius: var(--radius-sm);
-}
-.xp-way-icon { font-size: 18px; }
-.xp-way-text { flex: 1; font-size: 13px; font-weight: 700; color: var(--text-dark); }
-.xp-way-pts { font-size: 12px; font-weight: 800; color: var(--ocean); }
+.mood-grid-onhero { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-top: 18px; position: relative; z-index: 1; }
+.mood-tile { background: rgba(255,255,255,0.92); border: 2.5px solid transparent; border-radius: 16px; padding: 12px 6px; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; transition: all .18s var(--ease-spring); }
+.mood-tile:active { transform: scale(0.93); }
+.mood-tile.sel { transform: scale(1.05); background: white; box-shadow: 0 8px 18px rgba(0,0,0,0.18); }
+.mt-emoji { font-size: 23px; }
+.mt-lbl { font-size: 10px; font-weight: 800; color: var(--ink-soft); }
 
-/* ======= BIENESTAR ======= */
-.section-tabs {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 16px;
-  overflow-x: auto;
-  padding-bottom: 2px;
-}
-.section-tabs::-webkit-scrollbar { display: none; }
-.tab-pill {
-  flex-shrink: 0;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 700;
-  background: var(--ocean-light);
-  color: var(--text-mid);
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: all 0.2s;
-}
-.tab-pill.active { background: var(--ocean); color: white; }
+.chat-area2 { border-radius: var(--r-lg); padding: 15px; margin-top: 16px; margin-bottom: 13px; display: flex; gap: 11px; align-items: flex-start; }
+.chat-av2 { width: 42px; height: 42px; border-radius: 50%; background: white; box-shadow: var(--shadow-sm); display: flex; align-items: center; justify-content: center; font-size: 21px; flex-shrink: 0; }
+.chat-lbl2 { font-size: 10.5px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
+.chat-bubble2 { background: white; border-radius: 4px 14px 14px 14px; padding: 11px 14px; font-size: 13px; font-weight: 700; color: var(--ink); line-height: 1.5; box-shadow: var(--shadow-sm); transition: opacity .3s; }
 
-.bienestar-section { display: none; }
-.bienestar-section.active { display: block; }
+.breath-card2 { background: white; border-radius: var(--r-lg); padding: 22px; text-align: center; box-shadow: var(--shadow-sm); margin-bottom: 13px; }
+.breath-circle2 { width: 84px; height: 84px; border-radius: 50%; background: var(--teal-tint); border: 3px solid var(--teal); margin: 14px auto; display: flex; align-items: center; justify-content: center; font-size: 26px; cursor: pointer; transition: transform 4s ease; }
+.breath-circle2.inhale { transform: scale(1.35); }
+.breath-circle2.exhale { transform: scale(0.82); }
+.breath-text2 { font-size: 12.5px; font-weight: 800; color: var(--teal); margin-top: 6px; }
 
-.resource-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.resource-card {
-  background: white;
-  border-radius: var(--radius-sm);
-  padding: 14px;
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-.resource-card:active { transform: scale(0.97); }
-.resource-emoji { font-size: 28px; }
-.resource-title { font-size: 13px; font-weight: 800; color: var(--text-dark); line-height: 1.3; }
-.resource-sub { font-size: 11px; color: var(--text-soft); font-weight: 600; }
+.mc-weekday-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 7px; }
+.mc-weekday { text-align: center; font-size: 9.5px; font-weight: 900; color: var(--ink-mute); text-transform: uppercase; }
+.mc-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+.mc-tile { aspect-ratio: 1; border-radius: 9px; background: var(--sand); display: flex; align-items: center; justify-content: center; font-size: 13px; }
+.mc-tile.empty-slot { background: transparent; }
+.mc-tile.is-today { box-shadow: inset 0 0 0 2px var(--lavender-deep); }
+.mc-summary { border-radius: var(--r-lg); padding: 16px; margin-top: 13px; display: flex; align-items: center; gap: 13px; }
+.mc-summary-emoji { font-size: 32px; }
+.mc-summary-word { font-size: 15px; font-weight: 900; }
+.mc-summary-sub { font-size: 11px; font-weight: 700; opacity: 0.8; margin-top: 1px; }
 
-.music-player {
-  background: white;
-  border-radius: var(--radius);
-  padding: 20px;
-  text-align: center;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 12px;
-}
-.music-emoji { font-size: 48px; margin-bottom: 8px; }
-.music-title { font-size: 16px; font-weight: 800; color: var(--text-dark); }
-.music-sub { font-size: 13px; color: var(--text-soft); font-weight: 600; margin-top: 4px; }
-.music-controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 16px;
-}
-.music-btn {
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  border: none;
-  background: var(--ocean-light);
-  font-size: 18px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex; align-items: center; justify-content: center;
-}
-.music-btn.play { width: 56px; height: 56px; background: var(--ocean); font-size: 22px; }
-.music-btn:active { transform: scale(0.92); }
-.music-progress {
-  height: 4px;
-  background: var(--ocean-light);
-  border-radius: 2px;
-  margin: 16px 0 4px;
-  overflow: hidden;
-}
-.music-progress-fill {
-  height: 100%;
-  background: var(--ocean);
-  border-radius: 2px;
-  width: 35%;
-  transition: width 0.5s linear;
-}
+.tip-row2 { display: flex; gap: 11px; align-items: flex-start; padding: 12px 4px; }
+.tip-row2 + .tip-row2 { border-top: 1px solid var(--sand); }
+.tip-icon2 { width: 36px; height: 36px; border-radius: 11px; background: var(--lavender-tint); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.tip-text2 { font-size: 12.5px; font-weight: 700; color: var(--ink); line-height: 1.5; padding-top: 6px; }
 
-.teacher-card {
-  background: white;
-  border-radius: var(--radius);
-  padding: 16px;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 10px;
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-}
-.teacher-av {
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  background: var(--ocean-light);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px;
-  flex-shrink: 0;
-}
-.teacher-name { font-size: 14px; font-weight: 800; color: var(--text-dark); }
-.teacher-area { font-size: 11px; color: var(--text-soft); font-weight: 600; margin-top: 2px; }
-.teacher-tip { font-size: 13px; color: var(--text-mid); line-height: 1.5; margin-top: 8px; font-weight: 600; }
+/* ======================= MASCOTA — gradient creature profile, ring integrated ======================= */
+.mascota-hero2 { position: relative; padding: 28px 20px 96px; text-align: center; overflow: hidden; background: linear-gradient(160deg, #F2C36E 0%, var(--gold) 55%, var(--gold-deep) 100%); }
+.mascota-hero2 svg.wave-bottom { position: absolute; bottom: -1px; left: 0; width: 100%; height: 26px; }
+.mascota-mega2 { font-size: 76px; line-height: 1; display: inline-block; animation: float2 3.4s ease-in-out infinite; filter: drop-shadow(0 8px 14px rgba(0,0,0,0.18)); }
+@keyframes float2 { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-9px) rotate(2deg)} }
+.mascota-hero-name { font-size: 19px; font-weight: 900; color: white; margin-top: 6px; }
+.mascota-hero-sub { font-size: 12px; color: rgba(255,255,255,0.85); font-weight: 700; margin-top: 2px; }
 
-/* ======= MISC ======= */
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 16px 0 10px;
-}
-.section-h { font-size: 15px; font-weight: 800; color: var(--text-dark); }
-.section-link { font-size: 12px; font-weight: 700; color: var(--ocean); }
+.level-ring-float { position: absolute; bottom: -54px; left: 50%; transform: translateX(-50%); width: 108px; height: 108px; z-index: 2; }
+.level-ring-float svg { width: 100%; height: 100%; }
+.level-ring-center2 { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.level-ring-num2 { font-size: 24px; font-weight: 900; color: var(--ink); line-height: 1; }
+.level-ring-lbl2 { font-size: 7.5px; font-weight: 900; color: var(--ink-mute); text-transform: uppercase; }
 
-.divider { height: 1px; background: var(--ocean-light); margin: 16px 0; }
+.level-info-strip { text-align: center; margin-top: 64px; padding: 0 30px; }
+.level-info-name { font-size: 15px; font-weight: 900; color: var(--ink); }
+.level-info-xp { font-size: 11.5px; font-weight: 700; color: var(--ink-soft); margin-top: 3px; }
+.level-progress-bg { height: 7px; background: var(--sand); border-radius: 4px; margin-top: 9px; overflow: hidden; }
+.level-progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), #F2C36E); border-radius: 4px; transition: width 1s var(--ease-spring); }
 
-.toast {
-  position: fixed;
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: var(--text-dark);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 700;
-  opacity: 0;
-  transition: all 0.3s;
-  z-index: 300;
-  white-space: nowrap;
-}
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.stats-row2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin: 18px 0 13px; }
+.stat-card2 { background: white; border-radius: 16px; padding: 13px 6px; text-align: center; box-shadow: var(--shadow-sm); }
+.sc2-icon { font-size: 17px; margin-bottom: 4px; }
+.sc2-val { font-size: 19px; font-weight: 900; color: var(--ink); }
+.sc2-lbl { font-size: 9px; font-weight: 800; color: var(--ink-mute); margin-top: 1px; text-transform: uppercase; }
 
-.empty-state {
-  text-align: center;
-  padding: 32px 16px;
-  color: var(--text-soft);
-}
-.empty-emoji { font-size: 40px; margin-bottom: 8px; }
-.empty-text { font-size: 14px; font-weight: 700; }
+.evo-item2 { display: flex; align-items: center; gap: 12px; padding: 11px 4px; }
+.evo-item2 + .evo-item2 { border-top: 1px solid var(--sand); }
+.evo-icon2 { width: 42px; height: 42px; border-radius: 13px; background: var(--sand); display: flex; align-items: center; justify-content: center; font-size: 19px; flex-shrink: 0; }
+.evo-item2.current .evo-icon2 { background: var(--gold-tint); box-shadow: inset 0 0 0 2px var(--gold); }
+.evo-item2.locked { opacity: 0.42; }
+.evo-name2 { font-size: 13px; font-weight: 800; color: var(--ink); }
+.evo-req2 { font-size: 10.5px; color: var(--ink-mute); font-weight: 700; margin-top: 1px; }
+.evo-badge2 { font-size: 9.5px; font-weight: 900; padding: 4px 10px; border-radius: var(--r-pill); flex-shrink: 0; }
 
-/* ======= INSTALL BANNER ======= */
-.install-banner {
-  display: none;
-  background: var(--ocean);
-  color: white;
-  padding: 12px 16px;
-  align-items: center;
-  gap: 10px;
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 150;
-  box-shadow: 0 4px 20px rgba(11,127,212,0.3);
-}
+/* ======================= BIENESTAR ======================= */
+.bienestar-hero { padding: 22px 20px 18px; flex-shrink: 0; background: var(--white); border-bottom: 1px solid var(--sand-deep); }
+.bienestar-eyebrow { font-size: 11.5px; font-weight: 900; color: var(--teal); text-transform: uppercase; letter-spacing: 0.6px; }
+.bienestar-title { font-size: 24px; font-weight: 900; color: var(--ink); margin-top: 2px; }
+
+.section-tabs2 { display: flex; gap: 7px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 2px; }
+.section-tabs2::-webkit-scrollbar { display: none; }
+.tab-pill3 { flex-shrink: 0; padding: 9px 15px; border-radius: var(--r-pill); font-size: 12.5px; font-weight: 800; background: white; color: var(--ink-soft); cursor: pointer; border: 2px solid var(--sand-deep); transition: all .2s var(--ease); }
+.tab-pill3.active { background: var(--ink); color: white; border-color: var(--ink); }
+.bienestar-section2 { display: none; }
+.bienestar-section2.active { display: block; }
+
+.music-player2 { border-radius: var(--r-lg); padding: 22px; text-align: center; margin-bottom: 13px; color: white; background: linear-gradient(135deg, #6FD0BF, var(--teal) 60%, var(--teal-deep)); box-shadow: var(--shadow-md); }
+.mp-disc { width: 76px; height: 76px; border-radius: 50%; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 12px; animation: spin 8s linear infinite paused; border: 3px solid rgba(255,255,255,0.3); }
+.mp-disc.playing { animation-play-state: running; }
+@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+.mp-title { font-size: 16px; font-weight: 900; }
+.mp-sub { font-size: 12px; font-weight: 700; opacity: 0.85; margin-top: 2px; }
+.mp-progress { height: 5px; background: rgba(255,255,255,0.25); border-radius: 4px; margin: 16px 0 5px; overflow: hidden; }
+.mp-progress-fill { height: 100%; background: white; border-radius: 4px; transition: width .5s linear; }
+.mp-time-row { display: flex; justify-content: space-between; font-size: 10.5px; font-weight: 700; opacity: 0.85; }
+.mp-controls { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 14px; }
+.mp-btn { width: 42px; height: 42px; border-radius: 50%; border: none; background: rgba(255,255,255,0.2); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; }
+.mp-btn.play { width: 56px; height: 56px; background: white; color: var(--teal); font-size: 21px; }
+.mp-btn:active { transform: scale(0.9); }
+
+.resource-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.resource-card2 { background: white; border-radius: var(--r-md); padding: 14px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 6px; cursor: pointer; transition: transform .15s var(--ease); }
+.resource-card2:active { transform: scale(0.96); }
+.rc2-icon { width: 38px; height: 38px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.rc2-title { font-size: 12.5px; font-weight: 800; color: var(--ink); line-height: 1.3; margin-top: 2px; }
+.rc2-sub { font-size: 10.5px; color: var(--ink-mute); font-weight: 700; }
+
+.teacher-card2 { background: white; border-radius: var(--r-md); padding: 15px; box-shadow: var(--shadow-sm); margin-bottom: 10px; display: flex; gap: 12px; }
+.teacher-av2 { width: 44px; height: 44px; border-radius: 50%; background: var(--ocean-tint); display: flex; align-items: center; justify-content: center; font-size: 21px; flex-shrink: 0; }
+.teacher-name2 { font-size: 13.5px; font-weight: 900; color: var(--ink); }
+.teacher-area2 { font-size: 10.5px; color: var(--ink-mute); font-weight: 700; margin-top: 1px; }
+.teacher-tip2 { font-size: 12px; color: var(--ink-soft); line-height: 1.5; margin-top: 7px; font-weight: 600; }
+
+/* ===== Cuentos (stories) ===== */
+.story-card { border-radius: var(--r-lg); padding: 16px; margin-bottom: 11px; cursor: pointer; transition: transform .15s var(--ease); display: flex; gap: 13px; align-items: center; box-shadow: var(--shadow-sm); }
+.story-card:active { transform: scale(0.97); }
+.story-emoji-badge { width: 52px; height: 52px; border-radius: 16px; background: rgba(255,255,255,0.55); display: flex; align-items: center; justify-content: center; font-size: 25px; flex-shrink: 0; }
+.story-card-body { flex: 1; min-width: 0; }
+.story-card-title { font-size: 14.5px; font-weight: 900; color: var(--ink); }
+.story-card-theme { font-size: 11px; font-weight: 700; color: var(--ink-soft); margin-top: 2px; }
+.story-card-meta { font-size: 10.5px; font-weight: 800; color: var(--ink-mute); margin-top: 6px; display: flex; align-items: center; gap: 4px; }
+
+#screen-storyreader { position: fixed; inset: 0; z-index: 250; background: var(--white); display: none; flex-direction: column; }
+#screen-storyreader.open { display: flex; animation: readerIn .35s var(--ease) both; }
+@keyframes readerIn { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+.reader-hero { padding: 50px 24px 34px; position: relative; flex-shrink: 0; }
+.reader-back { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.35); border: none; display: flex; align-items: center; justify-content: center; font-size: 17px; cursor: pointer; color: var(--ink); margin-bottom: 18px; }
+.reader-back:active { transform: scale(0.9); }
+.reader-emoji { font-size: 46px; }
+.reader-title { font-size: 24px; font-weight: 900; color: var(--ink); margin-top: 10px; line-height: 1.2; }
+.reader-meta { font-size: 12px; font-weight: 800; color: var(--ink-soft); margin-top: 6px; }
+.reader-body-wrap { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 28px 26px calc(var(--nav-h) + 50px); }
+.reader-body-wrap::-webkit-scrollbar { display: none; }
+.reader-p { font-family: 'Lora', serif; font-size: 16.5px; line-height: 1.85; color: #2A3F4D; margin-bottom: 18px; font-weight: 500; }
+.reader-moral { font-family: 'Lora', serif; font-style: italic; font-size: 15px; color: var(--ink-soft); border-left: 3px solid var(--teal); padding-left: 16px; margin-top: 8px; line-height: 1.7; }
+
+/* ======================= MODAL (add task) ======================= */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(22,48,63,0.55); z-index: 200; align-items: flex-end; backdrop-filter: blur(3px); }
+.modal-overlay.open { display: flex; animation: fadeBg .25s var(--ease); }
+@keyframes fadeBg { from{opacity:0} to{opacity:1} }
+.modal-sheet { background: white; border-radius: 28px 28px 0 0; padding: 16px 20px 28px; width: 100%; max-height: 86vh; overflow-y: auto; animation: slideUp .32s var(--ease-spring) both; }
+@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+.modal-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.modal-circle-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--sand); border: none; display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer; color: var(--ink-soft); }
+.modal-circle-btn.confirm { background: var(--ink); color: white; }
+.modal-circle-btn:active { transform: scale(0.88); }
+.modal-title2 { font-size: 16px; font-weight: 900; color: var(--ink); }
+.chip-row { display: flex; gap: 7px; flex-wrap: wrap; }
+.chip { padding: 9px 13px; border-radius: var(--r-pill); background: var(--sand); border: 2px solid transparent; font-size: 12.5px; font-weight: 800; color: var(--ink-soft); cursor: pointer; transition: all .18s var(--ease); display: flex; align-items: center; gap: 5px; }
+.chip.sel { background: var(--ocean-tint); border-color: var(--ocean); color: var(--ocean-deep); }
+.priority-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.priority-opt { padding: 12px 4px; border-radius: 14px; background: var(--sand); border: 2px solid transparent; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; transition: all .18s var(--ease); }
+.priority-opt.sel { border-color: var(--ink); background: white; box-shadow: var(--shadow-sm); }
+.priority-opt span.pi-emoji { font-size: 18px; }
+.priority-opt span.pi-lbl { font-size: 10.5px; font-weight: 800; color: var(--ink-soft); }
+.input-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* ======================= TOAST / LEVEL UP / INSTALL ======================= */
+.toast2 { position: fixed; bottom: calc(var(--nav-h) + 22px); left: 50%; transform: translateX(-50%) translateY(14px) scale(0.95); background: var(--ink); color: white; padding: 11px 20px; border-radius: var(--r-pill); font-size: 13px; font-weight: 800; opacity: 0; transition: all .3s var(--ease-spring); z-index: 300; white-space: nowrap; box-shadow: var(--shadow-md); }
+.toast2.show { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+
+.levelup-overlay { position: fixed; inset: 0; z-index: 400; display: none; align-items: center; justify-content: center; background: rgba(22,48,63,0.6); backdrop-filter: blur(4px); }
+.levelup-overlay.show { display: flex; animation: fadeBg .25s var(--ease); }
+.levelup-card { background: white; border-radius: 28px; padding: 32px 28px; text-align: center; width: 84%; max-width: 320px; animation: popIn .45s var(--ease-spring) both; }
+@keyframes popIn { from{opacity:0;transform:scale(0.7)} to{opacity:1;transform:scale(1)} }
+.lu-emoji { font-size: 64px; animation: float2 1.8s ease-in-out infinite; }
+.lu-title { font-size: 20px; font-weight: 900; color: var(--ink); margin-top: 10px; }
+.lu-sub { font-size: 13.5px; color: var(--ink-soft); font-weight: 700; margin-top: 6px; line-height: 1.5; }
+.lu-btn { margin-top: 20px; }
+
+.install-banner { display: none; background: var(--ink); color: white; padding: 12px 16px; align-items: center; gap: 10px; position: fixed; top: 0; left: 0; right: 0; z-index: 150; padding-top: max(12px, env(safe-area-inset-top,12px)); }
 .install-banner.show { display: flex; }
-.install-text { flex: 1; font-size: 13px; font-weight: 700; }
-.install-btn {
-  background: white;
-  color: var(--ocean);
-  border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-family: 'Nunito', sans-serif;
-  font-size: 12px;
-  font-weight: 800;
-  cursor: pointer;
-}
-.install-close {
-  font-size: 18px;
-  cursor: pointer;
-  opacity: 0.8;
-  padding: 4px;
-}
+.install-text { flex: 1; font-size: 12.5px; font-weight: 700; }
+.install-btn2 { background: white; color: var(--ink); border: none; padding: 8px 16px; border-radius: var(--r-pill); font-size: 12px; font-weight: 800; cursor: pointer; }
+.install-close2 { font-size: 17px; cursor: pointer; opacity: 0.7; padding: 4px; }
 </style>
 </head>
 <body>
+<div class="toast2" id="toast"></div>
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
-
-<!-- INSTALL BANNER -->
 <div class="install-banner" id="installBanner">
   <span class="install-text">📲 Instala LITORAL en tu celular</span>
-  <button class="install-btn" id="installBtn">Instalar</button>
-  <span class="install-close" onclick="document.getElementById('installBanner').classList.remove('show')">✕</span>
+  <button class="install-btn2" id="installBtn">Instalar</button>
+  <span class="install-close2" onclick="document.getElementById('installBanner').classList.remove('show')">✕</span>
+</div>
+
+<div class="levelup-overlay" id="levelupOverlay">
+  <div class="levelup-card">
+    <div class="lu-emoji" id="luEmoji">🎉</div>
+    <div class="lu-title" id="luTitle">¡Subiste de nivel!</div>
+    <div class="lu-sub" id="luSub">Tu mascota evolucionó gracias a tu esfuerzo</div>
+    <button class="btn-primary lu-btn" onclick="document.getElementById('levelupOverlay').classList.remove('show')">Genial ✓</button>
+  </div>
 </div>
 
 <!-- ==================== SPLASH ==================== -->
 <div class="screen active" id="screen-splash" style="display:flex">
-  <div class="splash-logo">
-    <div class="splash-wave">🌊</div>
+  <div class="splash-wrap">
+    <div class="splash-ring">🌊</div>
     <div class="splash-title">LITORAL</div>
-    <div class="splash-sub">Tu espacio de calma y organización</div>
-    <div class="splash-loader"><div class="splash-loader-fill"></div></div>
+    <div class="splash-sub">Tu espacio de calma, organización y bienestar</div>
+    <div class="splash-loader"><div class="splash-loader-fill" id="splashFill"></div></div>
   </div>
 </div>
 
 <!-- ==================== ONBOARDING ==================== -->
-<div class="screen" id="screen-onboard" style="display:none">
-  <div class="onboard-wave-top">
-    <div style="font-size:40px">🌊</div>
-    <div style="font-size:24px;font-weight:900;color:white;letter-spacing:2px">LITORAL</div>
+<div class="screen flow-shell" id="screen-onboard" style="display:none">
+  <div class="flow-wave-top fw-ocean">
+    <div class="fw-emoji">🌊</div>
+    <div class="fw-brand">LITORAL</div>
+    <svg viewBox="0 0 400 40" preserveAspectRatio="none"><path d="M0,20 C100,40 300,0 400,20 L400,40 L0,40 Z" fill="#FBF5EC"/></svg>
   </div>
-  <div class="onboard-scroll">
-    <div class="onboard-steps">
-
-      <!-- STEP 1 -->
-      <div class="onboard-step active" id="ostep-1">
-        <div class="onboard-emoji">👋</div>
-        <div class="onboard-h">¡Hola! ¿Cómo te llamas?</div>
-        <div class="onboard-p">Tu nombre aparecerá en la app y tu mascota zodiacal te recordará con él.</div>
-        <div class="input-group">
-          <div class="input-label">TU NOMBRE</div>
-          <input class="inp" id="inp-name" type="text" placeholder="Escribe tu nombre..." maxlength="20">
-        </div>
+  <div class="flow-scroll">
+    <div class="flow-step active" id="ostep-1">
+      <div class="flow-emoji">👋</div>
+      <div class="flow-h">¡Hola! ¿Cómo te llamas?</div>
+      <div class="flow-p">Tu nombre aparecerá en la app y tu mascota zodiacal te recordará con él.</div>
+      <div class="input-group">
+        <div class="input-label">Tu nombre</div>
+        <input class="inp" id="inp-name" type="text" placeholder="Escribe tu nombre..." maxlength="20">
       </div>
+    </div>
 
-      <!-- STEP 2 -->
-      <div class="onboard-step" id="ostep-2">
-        <div class="onboard-emoji">✨</div>
-        <div class="onboard-h">¿Cuál es tu signo zodiacal?</div>
-        <div class="onboard-p">Tu animal compañero depende de tu signo. ¡Será tuyo para siempre!</div>
-        <div class="zodiac-grid">
-          <div class="zodiac-btn" onclick="selectZodiac(this,'♈','Aries','🐏')"><div class="zodiac-emoji">🐏</div><div class="zodiac-name">Aries</div></div>
-          <div class="zodiac-btn" onclick="selectZodiac(this,'♉','Tauro','🐂')"><div class="zodiac-emoji">🐂</div><div class="zodiac-name">Tauro</div></div>
-          <div class="zodiac-btn" onclick="selectZodiac(this,'♊','Géminis','🦋')"><div class="zodiac-emoji">🦋</div><div class="zodiac-name">Géminis</div></div>
-          <div class="zodiac-btn" onclick="selectZodiac(this,'♋','Cáncer','🦀')"><div class="zodiac-emoji">🦀</div><div class="zodiac-name">Cáncer</div></div>
-          <div class="zodiac-btn" onclick="selectZodiac(this,'♌','Leo','🦁')"><div class="zodiac-emoji">🦁</div><div class="zodiac-name">Leo</div></div>
-          <div class="zodiac-btn" onclick="selectZodiac(this,'♍','Virgo','🐺')"><div class="zodiac-emoji">🐺</div><div class="zodiac-name">Virgo</div></div>
-          <div class="zodiac-btn" onclick="selectZodiac(this,'♎','Libra','🦅')"><div class="zodiac-emoji">🦅</div><div class="zodiac-name">Libra</div></div>
-          <div class="zodiac-btn" onclick="selectZodiac(this,'♏','Escorpio','🦂')"><div class="zodiac-emoji">🦂</div><div class="zodiac-name">Escorpio</div></div>
-          <div class="zodiac-btn" onclick="selectZodiac(this,'♐','Sagitario','🐎')"><div class="zodiac-emoji">🐎</div><div class="zodiac-name">Sagitario</div></div>
-          <div class="zodiac-btn" onclick="selectZodiac(this,'♑','Capricornio','🐐')"><div class="zodiac-emoji">🐐</div><div class="zodiac-name">Capricornio</div></div>
-          <div class="zodiac-btn" onclick="selectZodiac(this,'♒','Acuario','🦜')"><div class="zodiac-emoji">🦜</div><div class="zodiac-name">Acuario</div></div>
-          <div class="zodiac-btn" onclick="selectZodiac(this,'♓','Piscis','🐟')"><div class="zodiac-emoji">🐟</div><div class="zodiac-name">Piscis</div></div>
-        </div>
-      </div>
+    <div class="flow-step" id="ostep-2">
+      <div class="flow-emoji">✨</div>
+      <div class="flow-h">¿Cuál es tu signo zodiacal?</div>
+      <div class="flow-p">Tu animal compañero depende de tu signo. ¡Será tuyo para siempre!</div>
+      <div class="zodiac-grid" id="zodiacGrid"></div>
+    </div>
 
-      <!-- STEP 3 -->
-      <div class="onboard-step" id="ostep-3">
-        <div class="onboard-emoji" id="ostep3-animal">🦁</div>
-        <div class="onboard-h" id="ostep3-title">¡Tu compañero está listo!</div>
-        <div class="onboard-p" id="ostep3-text">Este animal te acompañará en tu camino. Crece contigo según tu esfuerzo. ¡Cuídalo bien!</div>
-        <div style="background:var(--ocean-light);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:8px;">
-          <div style="font-size:13px;font-weight:800;color:var(--ocean-dark);">Con LITORAL podrás:</div>
-          <div style="font-size:13px;font-weight:600;color:var(--text-mid);">📅 Organizar tus tareas y exámenes</div>
-          <div style="font-size:13px;font-weight:600;color:var(--text-mid);">💙 Registrar cómo te sientes cada día</div>
-          <div style="font-size:13px;font-weight:600;color:var(--text-mid);">🦁 Ver evolucionar a tu mascota zodiacal</div>
-          <div style="font-size:13px;font-weight:600;color:var(--text-mid);">🎵 Acceder a recursos de bienestar</div>
-        </div>
-      </div>
+    <div class="flow-step" id="ostep-3">
+      <div class="flow-emoji" id="ostep3-animal" style="font-size:64px;">🦁</div>
+      <div class="flow-h" id="ostep3-title">¡Tu compañero está listo!</div>
+      <div class="flow-p" id="ostep3-text">Crecerá contigo según tu esfuerzo. Ahora te muestro rápido qué puedes hacer aquí.</div>
+    </div>
+    <div class="dot-nav"><div class="dot active" id="dot-1"></div><div class="dot" id="dot-2"></div><div class="dot" id="dot-3"></div></div>
+  </div>
+  <div class="flow-footer">
+    <button class="btn-primary" id="onboard-next-btn" onclick="onboardNext()">Continuar →</button>
+  </div>
+</div>
+
+<!-- ==================== TOUR ==================== -->
+<div class="screen flow-shell" id="screen-tour" style="display:none">
+  <div class="flow-wave-top" id="tourWaveTop">
+    <div class="tour-skip" onclick="endTour()">Saltar tour</div>
+    <div class="fw-emoji" id="tourHeaderEmoji">🌊</div>
+    <div class="fw-brand" id="tourHeaderWord">LITORAL</div>
+    <svg viewBox="0 0 400 40" preserveAspectRatio="none"><path d="M0,20 C100,40 300,0 400,20 L400,40 L0,40 Z" fill="#FBF5EC"/></svg>
+  </div>
+  <div class="flow-scroll">
+    <div class="flow-step active" id="tstep-1">
+      <div class="tour-icon-circle" style="background:var(--ocean-tint)">🌊</div>
+      <div class="flow-h">Bienvenido/a a tu litoral</div>
+      <div class="flow-p">LITORAL te acompaña en tres cosas: organizar tu tiempo, cuidar cómo te sientes y mantenerte motivado/a. Te muestro cada parte en 30 segundos.</div>
+    </div>
+
+    <div class="flow-step" id="tstep-2">
+      <div class="tour-icon-circle" style="background:var(--coral-tint)">📅</div>
+      <div class="flow-h">Organiza tus tareas</div>
+      <div class="flow-p">En Agenda registras tus tareas y exámenes con fecha y hora. LITORAL te ayuda a verlas ordenadas por día, separadas en pendientes y completadas.</div>
+      <div class="tour-mini-mock"><div class="timeline-row" style="margin-bottom:0;"><div class="tl-time">10:30</div><div class="tl-card" style="cursor:default;"><div class="tl-icon">📖</div><div class="tl-info"><div class="tl-name">Ensayo de Literatura</div><div class="tl-meta">Comunicación</div></div><div class="tl-check"></div></div></div></div>
+    </div>
+
+    <div class="flow-step" id="tstep-3">
+      <div class="tour-icon-circle" style="background:var(--lavender-tint)">💙</div>
+      <div class="flow-h">Cuéntame cómo te sientes</div>
+      <div class="flow-p">En Apoyo registras tu emoción del día, recibes consejos personalizados y puedes hacer un ejercicio de respiración guiada cuando lo necesites.</div>
+    </div>
+
+    <div class="flow-step" id="tstep-4">
+      <div class="tour-icon-circle" style="background:var(--gold-tint)" id="tourPetIcon">🐾</div>
+      <div class="flow-h">Cuida a tu mascota</div>
+      <div class="flow-p">Tu animal zodiacal evoluciona en 5 etapas según tu esfuerzo real: tareas completadas, días activos y emociones registradas. Mientras más cuidas de ti, más crece.</div>
+    </div>
+
+    <div class="flow-step" id="tstep-5">
+      <div class="tour-icon-circle" style="background:var(--teal-tint)">🌿</div>
+      <div class="flow-h">Tu espacio de calma</div>
+      <div class="flow-p">En Bienestar encuentras sonidos relajantes, cuentos cortos para desconectar, técnicas de estudio y consejos de tus docentes.</div>
+    </div>
+
+    <div class="flow-step" id="tstep-6">
+      <div class="tour-icon-circle" style="background:var(--ocean-tint)">⭐</div>
+      <div class="flow-h">Tu equilibrio, en un vistazo</div>
+      <div class="flow-p">En Inicio vas a ver un anillo con tu puntaje del día. Ahora mismo está en cero — va a crecer con cada cosa real que hagas. Empecemos.</div>
     </div>
 
     <div class="dot-nav">
-      <div class="dot active" id="dot-1"></div>
-      <div class="dot" id="dot-2"></div>
-      <div class="dot" id="dot-3"></div>
+      <div class="dot active" id="tdot-1"></div><div class="dot" id="tdot-2"></div><div class="dot" id="tdot-3"></div>
+      <div class="dot" id="tdot-4"></div><div class="dot" id="tdot-5"></div><div class="dot" id="tdot-6"></div>
     </div>
   </div>
-  <div class="onboard-footer">
-    <button class="btn-primary" id="onboard-next-btn" onclick="onboardNext()">Continuar →</button>
+  <div class="flow-footer">
+    <button class="btn-ghost" id="tourBackBtn" onclick="tourBack()" style="display:none;width:84px;flex-shrink:0;">←</button>
+    <button class="btn-primary" id="tour-next-btn" onclick="tourNext()">Siguiente →</button>
   </div>
 </div>
 
 <!-- ==================== MAIN APP ==================== -->
 <div id="main-app" style="display:none;">
 
-  <!-- NAV -->
   <nav class="bottom-nav" id="bottom-nav">
-    <div class="nav-item active" onclick="goTo('home')" id="nav-home">
-      <span class="nav-icon">🏠</span>
-      <span class="nav-label">Inicio</span>
-    </div>
-    <div class="nav-item" onclick="goTo('agenda')" id="nav-agenda">
-      <span class="nav-icon">📅</span>
-      <span class="nav-label">Agenda</span>
-    </div>
-    <div class="nav-item" onclick="goTo('apoyo')" id="nav-apoyo">
-      <span class="nav-icon">💙</span>
-      <span class="nav-label">Apoyo</span>
-    </div>
-    <div class="nav-item" onclick="goTo('mascota')" id="nav-mascota">
-      <span class="nav-icon">🐾</span>
-      <span class="nav-label">Mascota</span>
-    </div>
-    <div class="nav-item" onclick="goTo('bienestar')" id="nav-bienestar">
-      <span class="nav-icon">🌿</span>
-      <span class="nav-label">Bienestar</span>
-    </div>
+    <div class="nav-item active" onclick="goTo('home')" id="nav-home"><span class="nav-icon">🏠</span></div>
+    <div class="nav-item" onclick="goTo('agenda')" id="nav-agenda"><span class="nav-icon">📅</span></div>
+    <div class="nav-fab" onclick="goTo('apoyo')" id="nav-apoyo"><span>💙</span></div>
+    <div class="nav-item" onclick="goTo('mascota')" id="nav-mascota"><span class="nav-icon">🐾</span></div>
+    <div class="nav-item" onclick="goTo('bienestar')" id="nav-bienestar"><span class="nav-icon">🌿</span></div>
   </nav>
 
   <!-- ===== INICIO ===== -->
   <div class="screen" id="screen-home">
-    <div class="wave-header">
-      <div class="wh-greeting" id="home-greeting">Buenos días 👋</div>
-      <div class="wh-title" id="home-name">¡Hola!</div>
-      <div class="wh-sub" id="home-date">Hoy es un buen día para avanzar</div>
+    <div class="home-topbar">
+      <div class="home-avatar" id="home-avatar">🦁</div>
+      <div class="home-greet">
+        <div class="home-greeting" id="home-greeting">Buenos días</div>
+        <div class="home-name" id="home-name">¡Hola!</div>
+      </div>
+      <div class="home-streak">🔥 <span id="home-streak">1</span></div>
     </div>
-    <div class="scroll-area" style="margin-top:-20px;">
-      <div class="mascota-home-card" onclick="goTo('mascota')">
-        <div class="mascota-big" id="home-mascota-emoji">🦁</div>
-        <div class="mascota-home-info">
-          <div class="mascota-home-name" id="home-mascota-name">Tu mascota</div>
-          <div class="mascota-home-level" id="home-mascota-level">Nivel 1 · Recién nacido</div>
-          <div class="xp-row">
-            <div class="xp-bar"><div class="xp-fill" id="home-xp-bar" style="width:10%"></div></div>
-            <div class="xp-label" id="home-xp-label">0 XP</div>
-          </div>
+
+    <div class="scroll-area">
+      <div class="ring-hero">
+        <div class="ring-wrap">
+          <svg viewBox="0 0 200 200">
+            <circle id="seg-tareas" cx="100" cy="100" r="80" fill="none" stroke="var(--coral)" stroke-width="13" stroke-linecap="round" class="ring-seg" transform="rotate(-90 100 100)"/>
+            <circle id="seg-animo" cx="100" cy="100" r="80" fill="none" stroke="var(--lavender)" stroke-width="13" stroke-linecap="round" class="ring-seg" transform="rotate(0 100 100)"/>
+            <circle id="seg-mascota" cx="100" cy="100" r="80" fill="none" stroke="var(--gold)" stroke-width="13" stroke-linecap="round" class="ring-seg" transform="rotate(90 100 100)"/>
+            <circle id="seg-bienestar" cx="100" cy="100" r="80" fill="none" stroke="var(--teal)" stroke-width="13" stroke-linecap="round" class="ring-seg" transform="rotate(180 100 100)"/>
+          </svg>
+          <div class="ring-center"><div class="ring-num" id="ringNum">0.0</div><div class="ring-lbl">de 10</div></div>
+        </div>
+        <div class="ring-caption" id="ringCaption">Tu equilibrio crece con cada cosa real que hagas hoy</div>
+        <div class="ring-legend">
+          <div class="ring-legend-item" onclick="goTo('agenda')"><div class="ring-dot" style="background:var(--coral)"></div><div class="ring-legend-lbl">Tareas</div></div>
+          <div class="ring-legend-item" onclick="goTo('apoyo')"><div class="ring-dot" style="background:var(--lavender)"></div><div class="ring-legend-lbl">Ánimo</div></div>
+          <div class="ring-legend-item" onclick="goTo('mascota')"><div class="ring-dot" style="background:var(--gold)"></div><div class="ring-legend-lbl">Mascota</div></div>
+          <div class="ring-legend-item" onclick="goTo('bienestar')"><div class="ring-dot" style="background:var(--teal)"></div><div class="ring-legend-lbl">Bienestar</div></div>
         </div>
       </div>
 
-      <div class="section-header">
-        <div class="section-h">Tareas de hoy</div>
-        <div class="section-link" onclick="goTo('agenda')">Ver todas →</div>
-      </div>
-      <div id="home-tasks-list"></div>
-
-      <div class="divider"></div>
-      <div class="section-header" style="margin-top:0">
-        <div class="section-h">¿Cómo te sientes?</div>
-      </div>
-      <div class="quick-emotions" id="home-emotions">
-        <div class="quick-em-btn" onclick="quickEmotion(this,'😊 Bien')">😊 Bien</div>
-        <div class="quick-em-btn" onclick="quickEmotion(this,'😰 Estresado')">😰 Estresado</div>
-        <div class="quick-em-btn" onclick="quickEmotion(this,'😔 Triste')">😔 Triste</div>
-        <div class="quick-em-btn" onclick="quickEmotion(this,'😠 Enojado')">😠 Enojado</div>
-        <div class="quick-em-btn" onclick="quickEmotion(this,'😴 Cansado')">😴 Cansado</div>
-        <div class="quick-em-btn" onclick="quickEmotion(this,'🚀 Motivado')">🚀 Motivado</div>
-      </div>
-      <div id="home-emotion-response" style="margin-top:12px;display:none;" class="chat-area">
-        <div class="chat-mascota-row">
-          <div class="chat-av" id="home-chat-av">🦁</div>
-          <div>
-            <div class="chat-label">Tu compañero dice:</div>
-            <div class="chat-bubble" id="home-chat-msg"></div>
+      <div class="enter-stagger">
+        <div class="assistant-band" id="homeAssistantCard">
+          <div class="assistant-blob"></div>
+          <div class="assistant-avatar" id="homeAssistantAv">🦁</div>
+          <div class="assistant-body">
+            <div class="assistant-label">Tu compañero dice</div>
+            <div class="assistant-msg" id="homeAssistantMsg">¡Bienvenido/a! Agrega tu primera tarea para empezar 🌊</div>
+            <button class="assistant-cta" onclick="goTo('agenda')">Ver mi agenda →</button>
           </div>
         </div>
+
+        <div class="section-h2">Hoy<span class="section-link" onclick="goTo('agenda')">Ver agenda</span></div>
+        <div id="homeTodayList"></div>
+
+        <div class="section-h2">¿Cómo te sientes ahora?</div>
+        <div class="card"><div class="mood-row" id="homeMoodRow"></div></div>
       </div>
     </div>
   </div>
 
   <!-- ===== AGENDA ===== -->
   <div class="screen" id="screen-agenda">
-    <div class="wave-header wave-header-gold">
-      <div class="wh-greeting">Organización académica</div>
-      <div class="wh-title">Mi Agenda</div>
-      <div class="wh-sub" id="agenda-subtitle">Tus tareas y exámenes</div>
+    <div class="agenda-hero">
+      <div class="agenda-hero-top">
+        <div><div class="agenda-eyebrow">Mi agenda</div><div class="agenda-day-name" id="agenda-day-name">Hoy</div></div>
+        <div style="text-align:right;"><div class="agenda-month-lbl" id="agenda-month">Junio 2026</div><div class="agenda-day-num" id="agenda-day-num">30</div></div>
+      </div>
+      <div class="date-pill-row" id="datePillRow"></div>
+      <div class="tabs-row">
+        <div class="tab-pill2 active" id="tab-pendientes" onclick="switchAgendaTab('pendientes')">Pendientes</div>
+        <div class="tab-pill2" id="tab-completadas" onclick="switchAgendaTab('completadas')">Completadas</div>
+      </div>
     </div>
-    <div class="scroll-area" style="margin-top:-20px;">
-      <div class="week-strip" id="week-strip"></div>
-      <div id="agenda-tasks-list"></div>
-      <button class="add-task-btn" onclick="openAddTask()">➕ Agregar nueva tarea</button>
+    <div class="scroll-area" style="padding-top:18px;">
+      <div id="agendaTimeline"></div>
+      <div style="height:20px"></div>
     </div>
+    <div class="fab-add" onclick="openAddTask()">➕</div>
   </div>
 
   <!-- ===== APOYO EMOCIONAL ===== -->
   <div class="screen" id="screen-apoyo">
-    <div class="wave-header wave-header-teal">
-      <div class="wh-greeting">Apoyo emocional</div>
-      <div class="wh-title">¿Cómo estás hoy?</div>
-      <div class="wh-sub">Estoy aquí para acompañarte 💙</div>
+    <div class="apoyo-hero">
+      <div class="apoyo-greet-row">
+        <div class="apoyo-avatar" id="apoyo-avatar">🦁</div>
+        <div class="apoyo-greet-name" id="apoyo-greeting">Hola</div>
+      </div>
+      <div class="apoyo-question">¿Cómo te sientes hoy?</div>
+      <div class="mood-grid-onhero" id="apoyoMoodGrid"></div>
+      <svg class="wave-bottom" viewBox="0 0 400 26" preserveAspectRatio="none"><path d="M0,13 C100,26 300,0 400,13 L400,26 L0,26 Z" fill="#FBF5EC"/></svg>
     </div>
-    <div class="scroll-area" style="margin-top:-20px;">
+    <div class="scroll-area" style="margin-top:-4px;">
+      <div class="chat-area2" id="apoyoChat" style="background:var(--lavender-tint);display:none;">
+        <div class="chat-av2" id="apoyo-chat-av">🦁</div>
+        <div style="flex:1"><div class="chat-lbl2" style="color:var(--lavender-deep);">Tu compañero dice</div><div class="chat-bubble2" id="apoyo-chat-msg">Selecciona cómo te sientes para recibir apoyo.</div></div>
+      </div>
+
+      <div class="breath-card2">
+        <div style="font-size:14.5px;font-weight:900;color:var(--ink);">🌬️ Ejercicio de respiración</div>
+        <div style="font-size:12px;color:var(--ink-mute);font-weight:700;margin-top:3px;">Técnica 4-7-8 para calmar el estrés</div>
+        <div class="breath-circle2" id="breath-circle" onclick="startBreath()">🫁</div>
+        <div class="breath-text2" id="breath-text">Toca para empezar</div>
+      </div>
+
+      <div class="section-h2" style="margin-top:4px;">Tu registro emocional</div>
       <div class="card">
-        <div class="card-title">Selecciona cómo te sientes</div>
-        <div class="emotion-grid">
-          <div class="em-btn" onclick="selectEmotion(this,'😊','Feliz','¡Qué bueno saberlo! Tu energía positiva también ayuda a quienes te rodean. Aprovecha este momento para avanzar en tus tareas o hacer algo que te guste 💛','bg-success')">
-            <div class="em-emoji">😊</div><div class="em-label">Feliz</div>
-          </div>
-          <div class="em-btn" onclick="selectEmotion(this,'😰','Estresado','El estrés escolar es muy común. Respira despacio y recuerda: una tarea a la vez. ¿Quieres hacer el ejercicio de respiración conmigo? 🌊','bg-warning')">
-            <div class="em-emoji">😰</div><div class="em-label">Estresado</div>
-          </div>
-          <div class="em-btn" onclick="selectEmotion(this,'😔','Triste','Está bien sentirse triste. No tienes que estar bien todo el tiempo. Estoy aquí contigo. ¿Quieres contarme qué pasó? A veces expresarlo ayuda mucho 💙','bg-ocean')">
-            <div class="em-emoji">😔</div><div class="em-label">Triste</div>
-          </div>
-          <div class="em-btn" onclick="selectEmotion(this,'😠','Enojado','El enojo también es válido. Antes de actuar, respira. Cuéntame qué te molestó. A veces solo necesitamos que alguien nos escuche 🫂','bg-danger')">
-            <div class="em-emoji">😠</div><div class="em-label">Enojado</div>
-          </div>
-          <div class="em-btn" onclick="selectEmotion(this,'😴','Cansado','El descanso es tan importante como estudiar. Tu cuerpo y tu mente necesitan pausas. ¿Cuántas horas dormiste anoche? 💤','bg-mid')">
-            <div class="em-emoji">😴</div><div class="em-label">Cansado</div>
-          </div>
-          <div class="em-btn" onclick="selectEmotion(this,'😟','Ansioso','La ansiedad a veces nos hace ver los problemas más grandes de lo que son. Vamos paso a paso. Primero respira, luego pensamos juntos 🌊','bg-purple')">
-            <div class="em-emoji">😟</div><div class="em-label">Ansioso</div>
-          </div>
-        </div>
+        <div class="mc-weekday-row"><div class="mc-weekday">D</div><div class="mc-weekday">L</div><div class="mc-weekday">M</div><div class="mc-weekday">M</div><div class="mc-weekday">J</div><div class="mc-weekday">V</div><div class="mc-weekday">S</div></div>
+        <div class="mc-grid" id="moodCalGrid"></div>
+        <div id="mcSummaryWrap"></div>
       </div>
 
-      <div class="chat-area" id="apoyo-chat" style="display:none;">
-        <div class="chat-mascota-row">
-          <div class="chat-av" id="apoyo-chat-av">🦁</div>
-          <div style="flex:1">
-            <div class="chat-label" id="apoyo-chat-label">Tu compañero dice:</div>
-            <div class="chat-bubble" id="apoyo-chat-msg">Selecciona cómo te sientes para recibir apoyo personalizado.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="breath-card">
-        <div style="font-size:15px;font-weight:800;color:var(--text-dark);">🌬️ Ejercicio de respiración</div>
-        <div style="font-size:13px;color:var(--text-soft);font-weight:600;margin-top:4px;">Técnica 4-7-8 para calmar el estrés</div>
-        <div class="breath-circle" id="breath-circle" onclick="startBreath()">🫁</div>
-        <div class="breath-text" id="breath-text">Toca para empezar</div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Consejos para ti</div>
-        <div class="tips-list" id="apoyo-tips">
-          <div class="tip-item"><div class="tip-icon">📚</div><div class="tip-text">Divide tus tareas grandes en pasos pequeños. Es más fácil empezar así.</div></div>
-          <div class="tip-item"><div class="tip-icon">⏰</div><div class="tip-text">Estudia en bloques de 25 minutos con 5 de descanso. Se llama técnica Pomodoro.</div></div>
-          <div class="tip-item"><div class="tip-icon">🌙</div><div class="tip-text">Dormir 8 horas mejora tu memoria y concentración más que estudiar de noche.</div></div>
-          <div class="tip-item"><div class="tip-icon">💧</div><div class="tip-text">Toma agua constantemente mientras estudias. La deshidratación reduce la concentración.</div></div>
-        </div>
-      </div>
+      <div class="section-h2">Consejos para ti</div>
+      <div class="card" id="apoyoTips" style="padding:6px 14px;"></div>
     </div>
   </div>
 
   <!-- ===== MASCOTA ===== -->
   <div class="screen" id="screen-mascota">
-    <div class="wave-header wave-header-green" style="text-align:center;padding-bottom:70px;">
-      <div class="mascota-mega" id="mascota-screen-emoji">🦁</div>
+    <div class="mascota-hero2">
+      <div class="mascota-mega2" id="mascota-screen-emoji">🦁</div>
       <div class="mascota-hero-name" id="mascota-screen-name">Tu compañero</div>
-      <div class="mascota-hero-level" id="mascota-screen-level">Nivel 1 · Recién nacido</div>
+      <div class="mascota-hero-sub" id="mascota-screen-sub">Nivel 1 · Recién nacido</div>
+      <div class="level-ring-float">
+        <svg viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="white" stroke-width="9" opacity="0.5"/>
+          <circle id="levelRingFill" cx="50" cy="50" r="42" fill="none" stroke="var(--ink)" stroke-width="9" stroke-linecap="round" transform="rotate(-90 50 50)" style="transition:stroke-dashoffset 1.1s var(--ease-spring);"/>
+        </svg>
+        <div class="level-ring-center2"><div class="level-ring-num2" id="levelRingNum">1</div><div class="level-ring-lbl2">Nivel</div></div>
+      </div>
+      <svg class="wave-bottom" viewBox="0 0 400 26" preserveAspectRatio="none"><path d="M0,13 C100,26 300,0 400,13 L400,26 L0,26 Z" fill="#FBF5EC"/></svg>
     </div>
-    <div class="scroll-area" style="margin-top:-30px;">
-      <div class="stats-row">
-        <div class="stat-card"><div class="stat-val" id="stat-xp">0</div><div class="stat-lbl">XP total</div></div>
-        <div class="stat-card"><div class="stat-val" id="stat-days">0</div><div class="stat-lbl">Días activo</div></div>
-        <div class="stat-card"><div class="stat-val" id="stat-tasks">0</div><div class="stat-lbl">Tareas ✓</div></div>
+    <div class="scroll-area">
+      <div class="level-info-strip">
+        <div class="level-info-name" id="levelInfoName">Recién nacido</div>
+        <div class="level-info-xp" id="levelInfoXp">0 / 100 XP</div>
+        <div class="level-progress-bg"><div class="level-progress-fill" id="levelProgressFill" style="width:0%;"></div></div>
       </div>
 
-      <div class="card">
-        <div class="card-title">Evolución de tu mascota</div>
-        <div class="evo-timeline" id="evo-timeline"></div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">¿Cómo ganar XP?</div>
-        <div class="xp-ways">
-          <div class="xp-way"><div class="xp-way-icon">✅</div><div class="xp-way-text">Completar una tarea</div><div class="xp-way-pts">+50 XP</div></div>
-          <div class="xp-way"><div class="xp-way-icon">💙</div><div class="xp-way-text">Registrar tu emoción</div><div class="xp-way-pts">+20 XP</div></div>
-          <div class="xp-way"><div class="xp-way-icon">📅</div><div class="xp-way-text">Entrar a la app cada día</div><div class="xp-way-pts">+15 XP</div></div>
-          <div class="xp-way"><div class="xp-way-icon">🌿</div><div class="xp-way-text">Usar sección de bienestar</div><div class="xp-way-pts">+10 XP</div></div>
-          <div class="xp-way"><div class="xp-way-icon">🔥</div><div class="xp-way-text">Semana completa sin faltar</div><div class="xp-way-pts">+150 XP</div></div>
+      <div class="enter-stagger">
+        <div class="stats-row2">
+          <div class="stat-card2"><div class="sc2-icon">⭐</div><div class="sc2-val" id="stat-xp">0</div><div class="sc2-lbl">XP total</div></div>
+          <div class="stat-card2"><div class="sc2-icon">🔥</div><div class="sc2-val" id="stat-days">0</div><div class="sc2-lbl">Días activo</div></div>
+          <div class="stat-card2"><div class="sc2-icon">✅</div><div class="sc2-val" id="stat-tasks">0</div><div class="sc2-lbl">Tareas ✓</div></div>
         </div>
+        <div class="card" style="padding:8px 14px;"><div class="card-title" style="padding-top:6px;">Evolución de tu mascota</div><div id="evo-timeline"></div></div>
+        <div class="card" style="padding:8px 14px;"><div class="card-title" style="padding-top:6px;">¿Cómo ganar XP?</div><div id="xpWaysList"></div></div>
       </div>
     </div>
   </div>
 
   <!-- ===== BIENESTAR ===== -->
   <div class="screen" id="screen-bienestar">
-    <div class="wave-header wave-header-purple">
-      <div class="wh-greeting">Tu espacio de paz</div>
-      <div class="wh-title">Bienestar 🌿</div>
-      <div class="wh-sub">Relájate, aprende y recarga energía</div>
+    <div class="bienestar-hero">
+      <div class="bienestar-eyebrow">Tu espacio de calma</div>
+      <div class="bienestar-title">🌿 Bienestar</div>
     </div>
-    <div class="scroll-area" style="margin-top:-20px;">
-      <div class="section-tabs">
-        <div class="tab-pill active" onclick="switchBienestar(this,'musica')">🎵 Música</div>
-        <div class="tab-pill" onclick="switchBienestar(this,'libros')">📚 Lecturas</div>
-        <div class="tab-pill" onclick="switchBienestar(this,'tips')">🧠 Técnicas</div>
-        <div class="tab-pill" onclick="switchBienestar(this,'profes')">👩‍🏫 Docentes</div>
+    <div class="scroll-area" style="padding-top:18px;">
+      <div class="section-tabs2">
+        <div class="tab-pill3 active" onclick="switchBienestar(this,'musica')">🎵 Música</div>
+        <div class="tab-pill3" onclick="switchBienestar(this,'cuentos')">📖 Cuentos</div>
+        <div class="tab-pill3" onclick="switchBienestar(this,'tips')">🧠 Técnicas</div>
+        <div class="tab-pill3" onclick="switchBienestar(this,'profes')">👩‍🏫 Docentes</div>
       </div>
 
-      <div class="bienestar-section active" id="bsec-musica">
-        <div class="music-player">
-          <div class="music-emoji">🌊</div>
-          <div class="music-title">Sonidos del océano</div>
-          <div class="music-sub">Relajación · 15 minutos</div>
-          <div class="music-progress"><div class="music-progress-fill" id="music-fill"></div></div>
-          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-soft);font-weight:700;margin-bottom:4px;"><span id="music-time">5:15</span><span>15:00</span></div>
-          <div class="music-controls">
-            <button class="music-btn" onclick="prevTrack()">⏮</button>
-            <button class="music-btn play" id="play-btn" onclick="togglePlay()">▶️</button>
-            <button class="music-btn" onclick="nextTrack()">⏭</button>
-          </div>
+      <div class="bienestar-section2 active" id="bsec-musica">
+        <div class="music-player2">
+          <div class="mp-disc" id="mpDisc">🌊</div>
+          <div class="mp-title" id="mpTitle">Sonidos del océano</div>
+          <div class="mp-sub" id="mpSub">Relajación · 15 minutos</div>
+          <div class="mp-progress"><div class="mp-progress-fill" id="mpFill" style="width:0%;"></div></div>
+          <div class="mp-time-row"><span id="mpTime">0:00</span><span>15:00</span></div>
+          <div class="mp-controls"><button class="mp-btn" onclick="prevTrack()">⏮</button><button class="mp-btn play" id="play-btn" onclick="togglePlay()">▶️</button><button class="mp-btn" onclick="nextTrack()">⏭</button></div>
         </div>
-        <div class="resource-grid">
-          <div class="resource-card" onclick="selectTrack('🌊','Sonidos del océano','Relajación')"><div class="resource-emoji">🌊</div><div class="resource-title">Sonidos del océano</div><div class="resource-sub">Relajación</div></div>
-          <div class="resource-card" onclick="selectTrack('🌧️','Lluvia suave','Concentración')"><div class="resource-emoji">🌧️</div><div class="resource-title">Lluvia suave</div><div class="resource-sub">Concentración</div></div>
-          <div class="resource-card" onclick="selectTrack('🎵','Lo-fi beats','Estudio')"><div class="resource-emoji">🎵</div><div class="resource-title">Lo-fi beats</div><div class="resource-sub">Estudio</div></div>
-          <div class="resource-card" onclick="selectTrack('🌳','Bosque tranquilo','Ansiedad')"><div class="resource-emoji">🌳</div><div class="resource-title">Bosque tranquilo</div><div class="resource-sub">Ansiedad</div></div>
-        </div>
+        <div class="resource-grid2" id="musicGrid"></div>
       </div>
 
-      <div class="bienestar-section" id="bsec-libros">
-        <div class="resource-grid">
-          <div class="resource-card"><div class="resource-emoji">📖</div><div class="resource-title">El Principito</div><div class="resource-sub">Antoine de Saint-Exupéry</div></div>
-          <div class="resource-card"><div class="resource-emoji">🚀</div><div class="resource-title">El Alquimista</div><div class="resource-sub">Paulo Coelho</div></div>
-          <div class="resource-card"><div class="resource-emoji">🧠</div><div class="resource-title">Hábitos atómicos</div><div class="resource-sub">James Clear</div></div>
-          <div class="resource-card"><div class="resource-emoji">🌟</div><div class="resource-title">La chica del tren</div><div class="resource-sub">Paula Hawkins</div></div>
-          <div class="resource-card"><div class="resource-emoji">🎬</div><div class="resource-title">Dead Poets Society</div><div class="resource-sub">Película motivadora</div></div>
-          <div class="resource-card"><div class="resource-emoji">🦁</div><div class="resource-title">Billy Elliot</div><div class="resource-sub">Perseverancia</div></div>
-        </div>
+      <div class="bienestar-section2" id="bsec-cuentos">
+        <div id="cuentosList"></div>
       </div>
 
-      <div class="bienestar-section" id="bsec-tips">
-        <div class="tips-list">
-          <div class="tip-item"><div class="tip-icon">🍅</div><div class="tip-text"><strong>Técnica Pomodoro:</strong> Estudia 25 minutos, descansa 5. Repite 4 veces y toma un descanso largo de 20 minutos.</div></div>
-          <div class="tip-item"><div class="tip-icon">🗺️</div><div class="tip-text"><strong>Mapas mentales:</strong> Dibuja ideas conectadas en forma de árbol. Ayuda a memorizar y entender mejor.</div></div>
-          <div class="tip-item"><div class="tip-icon">🔁</div><div class="tip-text"><strong>Repaso espaciado:</strong> Repasa un tema al día siguiente, luego a la semana, luego al mes. La memoria se fija mejor.</div></div>
-          <div class="tip-item"><div class="tip-icon">✍️</div><div class="tip-text"><strong>Escribe para aprender:</strong> Resumir con tus propias palabras activa más la memoria que solo releer.</div></div>
-          <div class="tip-item"><div class="tip-icon">📵</div><div class="tip-text"><strong>Modo estudio:</strong> Silencia las notificaciones mientras estudias. 25 minutos sin distracciones valen más que 2 horas con el celular al lado.</div></div>
-          <div class="tip-item"><div class="tip-icon">🧘</div><div class="tip-text"><strong>Mindfulness:</strong> Antes de estudiar, cierra los ojos 2 minutos y respira lento. Lleva la atención al presente.</div></div>
-        </div>
+      <div class="bienestar-section2" id="bsec-tips">
+        <div class="card" style="padding:6px 14px;" id="tecnicasList"></div>
       </div>
 
-      <div class="bienestar-section" id="bsec-profes">
-        <div class="teacher-card">
-          <div class="teacher-av">👩‍🔬</div>
-          <div>
-            <div class="teacher-name">Prof. María — Ciencias</div>
-            <div class="teacher-area">Biología y Química</div>
-            <div class="teacher-tip">Para recordar los elementos de la tabla periódica, crea historias con sus nombres. La memorización por asociación es mucho más efectiva que la repetición mecánica.</div>
-          </div>
-        </div>
-        <div class="teacher-card">
-          <div class="teacher-av">👨‍🏫</div>
-          <div>
-            <div class="teacher-name">Prof. Carlos — Matemáticas</div>
-            <div class="teacher-area">Álgebra y Geometría</div>
-            <div class="teacher-tip">No memorices fórmulas, entiende de dónde vienen. Si entiendes el concepto, nunca las olvidarás. Haz ejercicios variados, no el mismo tipo una y otra vez.</div>
-          </div>
-        </div>
-        <div class="teacher-card">
-          <div class="teacher-av">👩‍💻</div>
-          <div>
-            <div class="teacher-name">Prof. Víctor — Ciencia y Tecnología</div>
-            <div class="teacher-area">Tecnología e Innovación</div>
-            <div class="teacher-tip">La tecnología es una herramienta, no un fin. Aprende a usarla de manera creativa y crítica. Cada problema tiene una solución tecnológica si piensas con método.</div>
-          </div>
-        </div>
-      </div>
+      <div class="bienestar-section2" id="bsec-profes"></div>
     </div>
   </div>
 
 </div><!-- end main-app -->
 
-<!-- MODAL AGREGAR TAREA -->
+<!-- ==================== STORY READER ==================== -->
+<div id="screen-storyreader">
+  <div class="reader-hero" id="readerHero">
+    <button class="reader-back" onclick="closeStory()">←</button>
+    <div class="reader-emoji" id="readerEmoji">📖</div>
+    <div class="reader-title" id="readerTitle">Título</div>
+    <div class="reader-meta" id="readerMeta">2 min de lectura</div>
+  </div>
+  <div class="reader-body-wrap" id="readerBody"></div>
+</div>
+
+<!-- ==================== MODAL AGREGAR TAREA ==================== -->
 <div class="modal-overlay" id="modal-task">
   <div class="modal-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-title">Nueva tarea 📝</div>
-    <div class="input-group" style="margin-bottom:12px;">
-      <div class="input-label">NOMBRE DE LA TAREA</div>
+    <div class="modal-top-row">
+      <button class="modal-circle-btn" onclick="closeAddTask()">✕</button>
+      <div class="modal-title2">Nueva tarea 📝</div>
+      <button class="modal-circle-btn confirm" onclick="saveTask()">✓</button>
+    </div>
+    <div class="input-group" style="margin-bottom:14px;">
+      <div class="input-label">Nombre de la tarea</div>
       <input class="inp" id="new-task-name" type="text" placeholder="Ej: Ensayo de Literatura...">
     </div>
-    <div class="input-row" style="margin-bottom:12px;">
-      <div class="input-group">
-        <div class="input-label">MATERIA</div>
-        <input class="inp" id="new-task-subject" type="text" placeholder="Ej: Historia">
-      </div>
-      <div class="input-group">
-        <div class="input-label">FECHA</div>
-        <input class="inp" id="new-task-date" type="date">
+    <div class="input-group" style="margin-bottom:14px;">
+      <div class="input-label">Materia</div>
+      <div class="chip-row" id="subjectChips" style="margin-bottom:8px;"></div>
+      <input class="inp" id="new-task-subject" type="text" placeholder="O escribe otra materia...">
+    </div>
+    <div class="input-row2" style="margin-bottom:14px;">
+      <div class="input-group"><div class="input-label">Fecha</div><input class="inp" id="new-task-date" type="date"></div>
+      <div class="input-group"><div class="input-label">Hora</div><input class="inp" id="new-task-time" type="time"></div>
+    </div>
+    <div class="input-group" style="margin-bottom:6px;">
+      <div class="input-label">Prioridad</div>
+      <div class="priority-grid" id="priorityGrid">
+        <div class="priority-opt sel" data-p="normal" onclick="selectPriority(this)"><span class="pi-emoji">📘</span><span class="pi-lbl">Normal</span></div>
+        <div class="priority-opt" data-p="urgente" onclick="selectPriority(this)"><span class="pi-emoji">🔴</span><span class="pi-lbl">Urgente</span></div>
+        <div class="priority-opt" data-p="examen" onclick="selectPriority(this)"><span class="pi-emoji">📝</span><span class="pi-lbl">Examen</span></div>
       </div>
     </div>
-    <div class="input-group" style="margin-bottom:20px;">
-      <div class="input-label">PRIORIDAD</div>
-      <select class="inp" id="new-task-priority">
-        <option value="normal">Normal</option>
-        <option value="urgente">🔴 Urgente</option>
-        <option value="examen">📝 Examen</option>
-      </select>
-    </div>
-    <button class="btn-primary" onclick="saveTask()" style="margin-top:0;">Guardar tarea ✓</button>
-    <button onclick="closeAddTask()" style="width:100%;margin-top:10px;padding:12px;background:none;border:none;font-family:Nunito;font-size:14px;font-weight:700;color:var(--text-soft);cursor:pointer;">Cancelar</button>
   </div>
 </div>
 
 <script>
-// ======= STATE =======
+/* ============================================================
+   ESTADO — cuenta nueva nace en cero, sin datos de ejemplo
+   ============================================================ */
 let state = {
   user: null,
   onboardStep: 1,
-  selectedZodiac: null,
+  tourStep: 1,
   currentScreen: 'home',
   tasks: [],
   xp: 0,
   daysActive: 0,
   tasksCompleted: 0,
   todayEmotion: null,
+  moodHistory: {},
+  lastOpenDate: null,
+  xpToday: 0,
+  bienestarVisitedToday: false,
+  agendaTab: 'pendientes',
   breathRunning: false,
-  breathPhase: 0,
-  musicPlaying: false,
-  musicProgress: 35
+  musicPlaying: false
 };
 
+const ZODIACS = [
+  {s:'♈',n:'Aries',a:'🐏',an:'Carnero'}, {s:'♉',n:'Tauro',a:'🐂',an:'Toro'},
+  {s:'♊',n:'Géminis',a:'🦋',an:'Mariposa'}, {s:'♋',n:'Cáncer',a:'🦀',an:'Cangrejo'},
+  {s:'♌',n:'Leo',a:'🦁',an:'León'}, {s:'♍',n:'Virgo',a:'🐺',an:'Lobo'},
+  {s:'♎',n:'Libra',a:'🦅',an:'Águila'}, {s:'♏',n:'Escorpio',a:'🦂',an:'Escorpión'},
+  {s:'♐',n:'Sagitario',a:'🐎',an:'Caballo'}, {s:'♑',n:'Capricornio',a:'🐐',an:'Cabra'},
+  {s:'♒',n:'Acuario',a:'🦜',an:'Loro'}, {s:'♓',n:'Piscis',a:'🐟',an:'Pez'}
+];
 const ZODIAC_EVOS = {
-  '🦁': ['🐱','🦁','🦁','👑🦁','⚡🦁'],
-  '🐟': ['🥚','🐟','🐠','🐬','🐋'],
-  '🐂': ['🐮','🐂','🦬','🏆🐂','⚡🦬'],
-  '🐏': ['🐑','🐏','🦌','🏆🦌','⚡🦌'],
-  '🦋': ['🐛','🐌','🦋','🦋','🌟🦋'],
-  '🦀': ['🥚','🦐','🦀','🦞','🦑'],
-  '🐺': ['🐾','🐕','🐺','🦊','🐉'],
-  '🦅': ['🐣','🐤','🦜','🦅','🦅'],
-  '🦂': ['🐜','🦟','🦂','🦂','⚡🦂'],
-  '🐎': ['🐴','🐎','🦓','🦄','✨🦄'],
-  '🐐': ['🐏','🐐','🦬','🏔️🐐','⚡🦬'],
-  '🦜': ['🐣','🐦','🦜','🦜','🌟🦜'],
+  '🦁':['🐱','🦁','🦁','👑','⚡'],'🐟':['🥚','🐟','🐠','🐬','🐋'],'🐂':['🐮','🐂','🦬','🏆','⚡'],
+  '🐏':['🐑','🐏','🦌','🏆','⚡'],'🦋':['🐛','🐌','🦋','🦋','🌟'],'🦀':['🥚','🦐','🦀','🦞','🦑'],
+  '🐺':['🐾','🐕','🐺','🦊','🐉'],'🦅':['🐣','🐤','🦜','🦅','🦅'],'🦂':['🐜','🦟','🦂','🦂','⚡'],
+  '🐎':['🐴','🐎','🦓','🦄','✨'],'🐐':['🐏','🐐','🦬','🏔️','⚡'],'🦜':['🐣','🐦','🦜','🦜','🌟']
 };
+const EVO_LEVELS = [{name:'Recién nacido',xp:0},{name:'Explorador',xp:100},{name:'Guerrero',xp:300},{name:'Guardián',xp:700},{name:'Leyenda',xp:1500}];
 
-const EVO_LEVELS = [
-  { name: 'Recién nacido', xp: 0, req: '0 XP' },
-  { name: 'Explorador', xp: 100, req: '100 XP' },
-  { name: 'Guerrero', xp: 300, req: '300 XP' },
-  { name: 'Guardián', xp: 700, req: '700 XP' },
-  { name: 'Leyenda', xp: 1500, req: '1500 XP' },
+const EMOTIONS = [
+  {e:'😊',l:'Feliz',c:'var(--teal)',t:'var(--teal-tint)',msg:'¡Me alegra saberlo! Tu energía positiva también ayuda a quienes te rodean. Aprovecha este momento 💛'},
+  {e:'😰',l:'Estresado',c:'var(--coral)',t:'var(--coral-tint)',msg:'El estrés escolar es muy común. Respira despacio, una tarea a la vez. ¿Probamos el ejercicio de respiración? 🌊'},
+  {e:'😔',l:'Triste',c:'var(--ocean)',t:'var(--ocean-tint)',msg:'Está bien sentirse triste. No tienes que estar bien todo el tiempo. Estoy aquí contigo 💙'},
+  {e:'😠',l:'Enojado',c:'var(--coral-red)',t:'var(--coral-red-tint)',msg:'El enojo también es válido. Antes de actuar, respira. A veces solo necesitamos que nos escuchen 🫂'},
+  {e:'😴',l:'Cansado',c:'var(--lavender)',t:'var(--lavender-tint)',msg:'El descanso es tan importante como estudiar. ¿Cuántas horas dormiste anoche? 💤'},
+  {e:'😟',l:'Ansioso',c:'#7A68C7',t:'var(--lavender-tint)',msg:'La ansiedad hace ver los problemas más grandes. Vamos paso a paso, empezando por respirar 🌬️'}
 ];
 
-const SAMPLE_TASKS = [
-  { id:1, name:'Ensayo de Literatura', subject:'Literatura', date: todayStr(0), priority:'urgente', done:false },
-  { id:2, name:'Ejercicios de Matemáticas', subject:'Matemáticas', date: todayStr(1), priority:'normal', done:false },
-  { id:3, name:'Repaso de Historia', subject:'Historia', date: todayStr(-1), priority:'normal', done:true },
+const SUBJECTS = [{n:'Matemáticas',i:'📐'},{n:'Comunicación',i:'📖'},{n:'Ciencia y Tecnología',i:'🔬'},{n:'Arte',i:'🎨'},{n:'Historia',i:'🏛️'},{n:'Inglés',i:'🌍'}];
+
+const TRACKS = [
+  {emoji:'🌊',title:'Sonidos del océano',sub:'Relajación',color:'var(--ocean-tint)'},
+  {emoji:'🌧️',title:'Lluvia suave',sub:'Concentración',color:'var(--lavender-tint)'},
+  {emoji:'🎵',title:'Lo-fi beats',sub:'Estudio',color:'var(--gold-tint)'},
+  {emoji:'🌳',title:'Bosque tranquilo',sub:'Ansiedad',color:'var(--teal-tint)'}
 ];
 
-function todayStr(offset=0) {
-  const d = new Date();
-  d.setDate(d.getDate() + offset);
-  return d.toISOString().split('T')[0];
-}
+const TECNICAS = [
+  {i:'🍅',t:'<strong>Técnica Pomodoro:</strong> estudia 25 minutos, descansa 5. Repite 4 veces y toma un descanso largo de 20 min.'},
+  {i:'🗺️',t:'<strong>Mapas mentales:</strong> dibuja ideas conectadas en forma de árbol. Ayuda a memorizar y entender mejor.'},
+  {i:'🔁',t:'<strong>Repaso espaciado:</strong> repasa un tema al día siguiente, luego a la semana, luego al mes.'},
+  {i:'✍️',t:'<strong>Escribe para aprender:</strong> resumir con tus propias palabras activa más la memoria que releer.'},
+  {i:'📵',t:'<strong>Modo estudio:</strong> silencia notificaciones. 25 min sin distracciones valen más que 2 horas con el celular al lado.'},
+  {i:'🧘',t:'<strong>Mindfulness:</strong> antes de estudiar, cierra los ojos 2 minutos y respira lento.'}
+];
 
-// ======= LOAD =======
+const PROFES = [
+  {av:'👩‍🔬',n:'Prof. María',area:'Biología y Química',tip:'Para recordar la tabla periódica, crea historias con los nombres. La memorización por asociación es más efectiva que la repetición.'},
+  {av:'👨‍🏫',n:'Prof. Carlos',area:'Álgebra y Geometría',tip:'No memorices fórmulas, entiende de dónde vienen. Si entiendes el concepto, nunca lo olvidarás.'},
+  {av:'👩‍💻',n:'Prof. Víctor',area:'Ciencia y Tecnología',tip:'La tecnología es una herramienta, no un fin. Cada problema tiene una solución si piensas con método.'}
+];
+
+/* ===== Cuentos originales, breves, temática litoral/bienestar ===== */
+const STORIES = [
+  { id:1, emoji:'🗼', title:'El faro que no se rendía', theme:'Perseverancia', color:'var(--ocean-tint)', dot:'var(--ocean)', read:2,
+    p:[
+      'Un faro viejo en la punta del litoral encendía su luz cada noche para guiar a los barcos pesqueros. Durante una tormenta que duró tres días, el farero sintió que sus brazos ya no tenían fuerzas para subir la escalera y encender la lámpara una vez más. Pensó en rendirse, en dejar que la oscuridad ganara esa noche.',
+      'Pero entonces recordó que no encendía la luz por él mismo, sino por quienes navegaban sin saber dónde estaba la costa. Subió la escalera, paso a paso, sin pensar en los doscientos escalones, solo en el siguiente.',
+      'Cuando amaneció, tres barcos pesqueros llegaron a puerto sanos y salvos. El farero nunca supo sus nombres, pero ellos sí supieron que alguien, en algún lugar, no se había rendido.'
+    ], moral:'A veces no necesitas ver la meta completa. Solo el siguiente escalón.' },
+  { id:2, emoji:'🦀', title:'El cangrejo que cambiaba de caparazón', theme:'Crecimiento y cambio', color:'var(--gold-tint)', dot:'var(--gold)', read:2,
+    p:[
+      'Cada cierto tiempo, el cangrejo ermitaño sentía que su caparazón le quedaba pequeño. Le dolía dejarlo, porque ese caparazón lo había protegido durante meses. Pero quedarse dentro significaba quedarse pequeño para siempre.',
+      'Un día, mientras buscaba uno nuevo, se sintió completamente expuesto, blando, vulnerable ante el mundo. "¿Y si no encuentro uno mejor?", pensó. Una vieja estrella de mar lo vio dudar y le dijo: "El momento entre un caparazón y otro es el único momento en que realmente creces. Duele porque ahí es donde te haces más grande."',
+      'El cangrejo encontró un caparazón nuevo, más amplio, con espacio para crecer otra vez. Y entendió que cada vez que algo le quedaba pequeño, no era un final. Era una señal de que había llegado el momento de seguir creciendo.'
+    ], moral:'Lo que te queda chico no es un fracaso. Es la prueba de que creciste.' },
+  { id:3, emoji:'🐙', title:'El pulpo de las mil tareas', theme:'Organización', color:'var(--coral-tint)', dot:'var(--coral)', read:2,
+    p:[
+      'El pulpo tenía ocho brazos y, por alguna razón, pensaba que debía usarlos los ocho al mismo tiempo. Intentaba cazar, construir su guarida, jugar y aprender, todo a la vez. Sus brazos se enredaban entre sí, y al final del día no había terminado nada bien.',
+      'Una vieja tortuga marina lo observó y le dijo algo simple: "Tienes ocho brazos, no ocho pulpos. Usa uno a la vez, y vas a ver que los ocho, juntos, hacen más de lo que crees."',
+      'El pulpo empezó a elegir un solo brazo para cada tarea. Uno para cazar. Cuando terminaba, otro para construir. Sus movimientos dejaron de enredarse. No hizo menos cosas: las hizo todas, una por una, y por primera vez llegó a la noche sin sentirse deshecho.'
+    ], moral:'No tienes que hacerlo todo a la vez. Solo lo siguiente, bien hecho.' },
+  { id:4, emoji:'🌊', title:'Marea baja, marea alta', theme:'Emociones', color:'var(--lavender-tint)', dot:'var(--lavender)', read:2,
+    p:[
+      'Una niña que vivía junto al litoral preguntó a su abuela por qué el mar a veces se alejaba tanto de la orilla, dejando todo seco y expuesto, y otras veces subía tan alto que cubría las rocas.',
+      '"Eso es la marea", dijo la abuela. "El mar no está roto cuando baja. Solo está en una parte de su ciclo. Y cuando sube de nuevo, tampoco significa que algo salió mal. Así son tus días también."',
+      'La niña pensó en sus días tristes, en los que sentía que todo se había secado por dentro. Y en los días felices, donde todo volvía a llenarse. "Entonces no debo asustarme cuando baja la marea", dijo. "Solo esperar, porque siempre vuelve a subir."'
+    ], moral:'Tus emociones tienen mareas. Bajan, y siempre vuelven a subir.' },
+  { id:5, emoji:'⭐', title:'La estrella de mar que brillaba distinto', theme:'Autoestima', color:'var(--teal-tint)', dot:'var(--teal)', read:2,
+    p:[
+      'En un fondo marino lleno de peces de colores brillantes, vivía una estrella de mar que no brillaba como ellos. Era de un naranja apagado, sin escamas relucientes, sin movimientos veloces. Durante mucho tiempo se preguntó qué tenía de malo.',
+      'Un día, una tormenta revolvió todo el fondo marino. Los peces veloces se asustaron y nadaron en círculos sin saber qué hacer. La estrella de mar, en cambio, hizo lo único que sabía hacer bien: sostenerse firme a la roca, despacio, sin soltarse.',
+      'Cuando la tormenta pasó, fue la única que seguía exactamente en su lugar. Los peces le preguntaron cómo lo había logrado. "No necesito brillar como ustedes", respondió. "Solo necesito ser buena en sostenerme, a mi manera."'
+    ], moral:'No todos brillamos igual, y no hace falta.' },
+  { id:6, emoji:'🐚', title:'La concha que guardaba sus miedos', theme:'Pedir ayuda', color:'var(--coral-red-tint)', dot:'var(--coral-red)', read:2,
+    p:[
+      'Una pequeña concha vivía guardando todo lo que le daba miedo dentro de sí misma, bien cerrada, para que nadie lo viera. Pensaba que si alguien notaba sus miedos, dejarían de quererla.',
+      'Un pulpo curioso se acercó un día y, en lugar de burlarse, simplemente se sentó cerca, en silencio. No le pidió que se abriera. Solo se quedó ahí.',
+      'Poco a poco, sin presión, la concha se abrió un poco. Adentro no había nada feo, como ella temía. Solo cosas pequeñas y humanas: el miedo a no alcanzar, el miedo a estar sola, el miedo a equivocarse. El pulpo no se fue. Y la concha entendió que los miedos se vuelven más livianos cuando alguien se queda cerca mientras los miras.'
+    ], moral:'Los miedos pesan menos cuando alguien se queda cerca mientras los miras.' }
+];
+
+function todayStr(offset=0) { const d = new Date(); d.setDate(d.getDate()+offset); return d.toISOString().split('T')[0]; }
+
+/* ============================================================
+   LOAD
+   ============================================================ */
 window.onload = () => {
   try {
-    const saved = localStorage.getItem('litoral_state');
+    const saved = localStorage.getItem('litoral_state_v3');
     if (saved) Object.assign(state, JSON.parse(saved));
-  } catch(e) { localStorage.removeItem('litoral_state'); }
+  } catch(e) { localStorage.removeItem('litoral_state_v3'); }
 
-  if (!state.tasks || !state.tasks.length) state.tasks = SAMPLE_TASKS;
+  if (!Array.isArray(state.tasks)) state.tasks = [];
+  if (!state.moodHistory) state.moodHistory = {};
+  handleDailyRollover();
+
+  buildZodiacGrid();
+  buildStaticContent();
+
+  requestAnimationFrame(() => { document.getElementById('splashFill').style.width = '100%'; });
 
   setTimeout(() => {
-    hideSplash();
-    if (state.user) {
-      showMainApp();
-    } else {
-      showPreApp('onboard');
-    }
-  }, 2200);
+    document.getElementById('screen-splash').style.display = 'none';
+    if (state.user) showMainApp(); else showOnboard();
+  }, 1600);
 };
 
-function save() {
-  try { localStorage.setItem('litoral_state', JSON.stringify(state)); } catch(e){}
+function save() { try { localStorage.setItem('litoral_state_v3', JSON.stringify(state)); } catch(e){} }
+
+function handleDailyRollover() {
+  const today = todayStr(0);
+  if (!state.lastOpenDate) { return; }
+  if (state.lastOpenDate !== today) {
+    state.daysActive = (state.daysActive||0) + 1;
+    state.todayEmotion = null;
+    state.bienestarVisitedToday = false;
+    state.xpToday = 0;
+    state.xp = (state.xp||0) + 15;
+    state.lastOpenDate = today;
+    save();
+  }
 }
 
-// ======= SCREENS =======
-// Pre-app screens: splash, onboard (fuera de #main-app)
-function hideSplash() {
-  document.getElementById('screen-splash').style.display = 'none';
-}
-
-function showPreApp(id) {
-  document.getElementById('screen-splash').style.display = 'none';
+/* ============================================================
+   SCREEN SWITCHING (shells are mutually exclusive top-level containers)
+   ============================================================ */
+function showOnboard() {
   document.getElementById('screen-onboard').style.display = 'flex';
+  document.getElementById('screen-tour').style.display = 'none';
   document.getElementById('main-app').style.display = 'none';
 }
-
-function showMainApp() {
-  document.getElementById('screen-splash').style.display = 'none';
+function showTour() {
   document.getElementById('screen-onboard').style.display = 'none';
+  document.getElementById('screen-tour').style.display = 'flex';
+  document.getElementById('main-app').style.display = 'none';
+  updateTourTheme();
+}
+function showMainApp() {
+  document.getElementById('screen-onboard').style.display = 'none';
+  document.getElementById('screen-tour').style.display = 'none';
   document.getElementById('main-app').style.display = 'block';
-  updateAllUI();
+  updateHomeHeader();
   goTo('home');
 }
 
 function goTo(screen) {
-  // Solo opera dentro de #main-app
   document.querySelectorAll('#main-app .screen').forEach(s => s.classList.remove('active'));
   const el = document.getElementById('screen-' + screen);
-  if (el) el.classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+  el.querySelectorAll('.enter-stagger').forEach(c => { c.classList.remove('enter-stagger'); void c.offsetWidth; c.classList.add('enter-stagger'); });
+
+  document.querySelectorAll('.nav-item, .nav-fab').forEach(n => n.classList.remove('active'));
   const navEl = document.getElementById('nav-' + screen);
   if (navEl) navEl.classList.add('active');
+
   state.currentScreen = screen;
-  if (screen === 'home') renderHomeTasks();
+
+  if (screen === 'home') renderHome();
   if (screen === 'agenda') renderAgenda();
+  if (screen === 'apoyo') renderApoyo();
   if (screen === 'mascota') renderMascota();
+  if (screen === 'bienestar') { if (!state.bienestarVisitedToday) { state.bienestarVisitedToday = true; addXP(10, false); save(); } }
 }
 
-// ======= ONBOARDING =======
+/* ============================================================
+   ONBOARDING
+   ============================================================ */
+function buildZodiacGrid() {
+  document.getElementById('zodiacGrid').innerHTML = ZODIACS.map(z =>
+    `<div class="zodiac-btn" onclick="selectZodiac(this,'${z.s}','${z.n}','${z.a}','${z.an}')"><div class="zodiac-emoji">${z.a}</div><div class="zodiac-name">${z.n}</div></div>`
+  ).join('');
+}
 let zodiacData = null;
-
+function selectZodiac(el, symbol, name, animal, animalName) {
+  document.querySelectorAll('.zodiac-btn').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+  zodiacData = { symbol, name, animal, animalName };
+}
 function onboardNext() {
   const s = state.onboardStep;
   if (s === 1) {
@@ -1342,398 +996,555 @@ function onboardNext() {
     state.user.zodiac = zodiacData;
     document.getElementById('ostep3-animal').textContent = zodiacData.animal;
     document.getElementById('ostep3-title').textContent = `¡${zodiacData.name} es tu signo!`;
-    document.getElementById('ostep3-text').textContent = `Tu compañero zodiacal es un ${zodiacData.animalName}. Crece contigo, te envía recordatorios y evoluciona según tu esfuerzo. ¡Cuídalo mucho!`;
     moveOnboardStep(3);
-    document.getElementById('onboard-next-btn').textContent = '¡Empezar! 🌊';
+    document.getElementById('onboard-next-btn').textContent = 'Conocer la app →';
   } else if (s === 3) {
     state.daysActive = 1;
+    state.lastOpenDate = todayStr(0);
     save();
-    showMainApp();
+    document.getElementById('tourPetIcon').textContent = state.user.zodiac.animal;
+    showTour();
   }
 }
-
 function moveOnboardStep(n) {
-  document.getElementById('ostep-' + state.onboardStep).classList.remove('active');
-  document.getElementById('dot-' + state.onboardStep).classList.remove('active');
+  document.getElementById('ostep-'+state.onboardStep).classList.remove('active');
+  document.getElementById('dot-'+state.onboardStep).classList.remove('active');
   state.onboardStep = n;
-  document.getElementById('ostep-' + n).classList.add('active');
-  document.getElementById('dot-' + n).classList.add('active');
+  document.getElementById('ostep-'+n).classList.add('active');
+  document.getElementById('dot-'+n).classList.add('active');
+  document.querySelector('#screen-onboard .flow-scroll').scrollTop = 0;
 }
 
-function selectZodiac(el, symbol, name, animal) {
-  document.querySelectorAll('.zodiac-btn').forEach(b => b.classList.remove('sel'));
+/* ============================================================
+   TOUR
+   ============================================================ */
+const TOUR_THEMES = [
+  {bg:'linear-gradient(135deg,#2BA0DD,#1A86C8 55%,#0E5C8F)', emoji:'🌊', word:'LITORAL'},
+  {bg:'linear-gradient(135deg,#FFAD8C,#FF8B66 55%,#E8703F)', emoji:'📅', word:'AGENDA'},
+  {bg:'linear-gradient(135deg,#BCAFF0,#9C8CE0 55%,#6E5DC2)', emoji:'💙', word:'APOYO'},
+  {bg:'linear-gradient(135deg,#F2C36E,#E8A93E 55%,#C68A24)', emoji:'🐾', word:'MASCOTA'},
+  {bg:'linear-gradient(135deg,#6FD0BF,#45B8A6 55%,#2E9485)', emoji:'🌿', word:'BIENESTAR'},
+  {bg:'linear-gradient(135deg,#2BA0DD,#1A86C8 55%,#0E5C8F)', emoji:'⭐', word:'EQUILIBRIO'}
+];
+function updateTourTheme() {
+  const t = TOUR_THEMES[state.tourStep-1];
+  document.getElementById('tourWaveTop').style.background = t.bg;
+  document.getElementById('tourHeaderEmoji').textContent = t.emoji;
+  document.getElementById('tourHeaderWord').textContent = t.word;
+}
+function tourNext() {
+  if (state.tourStep >= 6) { endTour(); return; }
+  document.getElementById('tstep-'+state.tourStep).classList.remove('active');
+  document.getElementById('tdot-'+state.tourStep).classList.remove('active');
+  state.tourStep++;
+  document.getElementById('tstep-'+state.tourStep).classList.add('active');
+  document.getElementById('tdot-'+state.tourStep).classList.add('active');
+  document.getElementById('tourBackBtn').style.display = 'block';
+  document.getElementById('tour-next-btn').textContent = state.tourStep === 6 ? 'Empezar mi viaje 🌊' : 'Siguiente →';
+  document.querySelector('#screen-tour .flow-scroll').scrollTop = 0;
+  updateTourTheme();
+}
+function tourBack() {
+  if (state.tourStep <= 1) return;
+  document.getElementById('tstep-'+state.tourStep).classList.remove('active');
+  document.getElementById('tdot-'+state.tourStep).classList.remove('active');
+  state.tourStep--;
+  document.getElementById('tstep-'+state.tourStep).classList.add('active');
+  document.getElementById('tdot-'+state.tourStep).classList.add('active');
+  if (state.tourStep === 1) document.getElementById('tourBackBtn').style.display = 'none';
+  document.getElementById('tour-next-btn').textContent = 'Siguiente →';
+  updateTourTheme();
+}
+function endTour() { showMainApp(); }
+
+/* ============================================================
+   STATIC CONTENT
+   ============================================================ */
+function buildStaticContent() {
+  document.getElementById('homeMoodRow').innerHTML = EMOTIONS.map(em =>
+    `<div class="mood-pill" id="hmood-${em.e}" onclick="logEmotion('${em.e}')"><div class="mood-pill-icon" style="background:${em.t};">${em.e}</div><div class="mood-pill-lbl">${em.l}</div></div>`).join('');
+
+  document.getElementById('apoyoMoodGrid').innerHTML = EMOTIONS.map(em =>
+    `<div class="mood-tile" id="amood-${em.e}" onclick="logEmotion('${em.e}')"><div class="mt-emoji">${em.e}</div><div class="mt-lbl">${em.l}</div></div>`).join('');
+
+  document.getElementById('apoyoTips').innerHTML = TECNICAS.slice(0,4).map(t =>
+    `<div class="tip-row2"><div class="tip-icon2">${t.i}</div><div class="tip-text2">${t.t}</div></div>`).join('');
+
+  document.getElementById('subjectChips').innerHTML = SUBJECTS.map(s =>
+    `<div class="chip" onclick="pickSubjectChip(this,'${s.n}','${s.i}')">${s.i} ${s.n}</div>`).join('');
+
+  document.getElementById('musicGrid').innerHTML = TRACKS.map((t,i) =>
+    `<div class="resource-card2" onclick="selectTrack(${i})"><div class="rc2-icon" style="background:${t.color}">${t.emoji}</div><div class="rc2-title">${t.title}</div><div class="rc2-sub">${t.sub}</div></div>`).join('');
+
+  document.getElementById('tecnicasList').innerHTML = TECNICAS.map(t =>
+    `<div class="tip-row2"><div class="tip-icon2">${t.i}</div><div class="tip-text2">${t.t}</div></div>`).join('');
+
+  document.getElementById('bsec-profes').innerHTML = PROFES.map(p =>
+    `<div class="teacher-card2"><div class="teacher-av2">${p.av}</div><div><div class="teacher-name2">${p.n}</div><div class="teacher-area2">${p.area}</div><div class="teacher-tip2">${p.tip}</div></div></div>`).join('');
+
+  document.getElementById('cuentosList').innerHTML = STORIES.map(s =>
+    `<div class="story-card" style="background:${s.color}" onclick="openStory(${s.id})">
+      <div class="story-emoji-badge">${s.emoji}</div>
+      <div class="story-card-body">
+        <div class="story-card-title">${s.title}</div>
+        <div class="story-card-theme">${s.theme}</div>
+        <div class="story-card-meta">📖 ${s.read} min de lectura</div>
+      </div>
+    </div>`).join('');
+}
+
+let selectedSubject = null;
+function pickSubjectChip(el, name, icon) {
+  document.querySelectorAll('#subjectChips .chip').forEach(c => c.classList.remove('sel'));
   el.classList.add('sel');
-  const animalNames = {'🐏':'Carnero','🐂':'Toro','🦋':'Mariposa','🦀':'Cangrejo','🦁':'León','🐺':'Lobo','🦅':'Águila','🦂':'Escorpión','🐎':'Caballo','🐐':'Cabra','🦜':'Loro','🐟':'Pez'};
-  zodiacData = { symbol, name, animal, animalName: animalNames[animal] || name };
+  document.getElementById('new-task-subject').value = name;
+  selectedSubject = { name, icon };
 }
 
-// ======= UI UPDATE =======
-function updateAllUI() {
-  if (!state.user) return;
-  const u = state.user;
-  const animal = u.zodiac ? u.zodiac.animal : '🌊';
-  const level = getCurrentLevel();
-
-  // Home header
-  const h = new Date().getHours();
-  const greet = h < 12 ? 'Buenos días' : h < 19 ? 'Buenas tardes' : 'Buenas noches';
-  document.getElementById('home-greeting').textContent = greet + ' 👋';
-  document.getElementById('home-name').textContent = '¡Hola, ' + u.name + '!';
-  const days = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
-  const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  const now = new Date();
-  document.getElementById('home-date').textContent = days[now.getDay()] + ', ' + now.getDate() + ' de ' + months[now.getMonth()];
-
-  // Mascota home
-  document.getElementById('home-mascota-emoji').textContent = animal;
-  document.getElementById('home-chat-av').textContent = animal;
-  document.getElementById('apoyo-chat-av').textContent = animal;
-  document.getElementById('mascota-screen-emoji').textContent = animal;
-  document.getElementById('home-mascota-name').textContent = 'Tu ' + (u.zodiac ? u.zodiac.animalName : 'compañero');
-  document.getElementById('home-mascota-level').textContent = 'Nivel ' + (level.idx+1) + ' · ' + level.name;
-  const nextXP = EVO_LEVELS[Math.min(level.idx+1, 4)].xp;
-  const pct = level.idx >= 4 ? 100 : Math.min(100, Math.round((state.xp - level.xp) / (nextXP - level.xp) * 100));
-  document.getElementById('home-xp-bar').style.width = pct + '%';
-  document.getElementById('home-xp-label').textContent = state.xp + ' XP';
-}
-
+/* ============================================================
+   XP / LEVELS
+   ============================================================ */
 function getCurrentLevel() {
   let idx = 0;
-  for (let i = EVO_LEVELS.length-1; i >= 0; i--) {
-    if (state.xp >= EVO_LEVELS[i].xp) { idx = i; break; }
-  }
+  for (let i = EVO_LEVELS.length-1; i>=0; i--) { if (state.xp >= EVO_LEVELS[i].xp) { idx = i; break; } }
   return { ...EVO_LEVELS[idx], idx };
 }
-
-// ======= HOME TASKS =======
-function renderHomeTasks() {
-  const today = todayStr(0);
-  const list = document.getElementById('home-tasks-list');
-  const todayTasks = state.tasks.filter(t => t.date === today).slice(0, 4);
-  if (!todayTasks.length) {
-    list.innerHTML = '<div class="empty-state"><div class="empty-emoji">✅</div><div class="empty-text">No tienes tareas para hoy</div></div>';
-    return;
-  }
-  list.innerHTML = todayTasks.map(t => taskHTML(t)).join('');
-}
-
-function taskHTML(t) {
-  const cls = t.done ? 'completada' : (t.priority === 'urgente' ? 'urgente' : '');
-  const badge = t.done ? '<span class="badge badge-success">Completada</span>' : 
-                t.priority === 'urgente' ? '<span class="badge badge-danger">Urgente</span>' :
-                t.priority === 'examen' ? '<span class="badge badge-warning">Examen</span>' :
-                '<span class="badge badge-ocean">Pendiente</span>';
-  return `<div class="task-item ${cls}" onclick="toggleTask(${t.id})">
-    <div class="task-check-btn ${t.done ? 'done' : ''}" onclick="event.stopPropagation();toggleTask(${t.id})"></div>
-    <div class="task-info">
-      <div class="task-name">${t.name}</div>
-      <div class="task-meta">${t.subject} · ${formatDate(t.date)}</div>
-    </div>
-    ${badge}
-  </div>`;
-}
-
-function formatDate(str) {
-  const d = new Date(str + 'T12:00:00');
-  const days = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-  const months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-  return days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()];
-}
-
-function toggleTask(id) {
-  const t = state.tasks.find(t => t.id === id);
-  if (!t) return;
-  if (!t.done) {
-    t.done = true;
-    state.tasksCompleted++;
-    addXP(50);
-    showToast('¡+50 XP! Tarea completada 🎉');
-  } else {
-    t.done = false;
-    state.tasksCompleted = Math.max(0, state.tasksCompleted-1);
-    state.xp = Math.max(0, state.xp - 50);
-  }
-  save();
-  updateAllUI();
-  if (state.currentScreen === 'home') renderHomeTasks();
-  if (state.currentScreen === 'agenda') renderAgenda();
-  if (state.currentScreen === 'mascota') renderMascota();
-}
-
-function addXP(amount) {
-  const prevLevel = getCurrentLevel().idx;
+function addXP(amount, celebrate=true) {
+  const prevIdx = getCurrentLevel().idx;
   state.xp += amount;
-  const newLevel = getCurrentLevel().idx;
+  state.xpToday = (state.xpToday||0) + amount;
+  const newIdx = getCurrentLevel().idx;
   save();
-  updateAllUI();
-  if (newLevel > prevLevel) {
-    setTimeout(() => showToast('🎉 ¡Tu mascota evolucionó! Nivel ' + (newLevel+1)), 1000);
-  }
+  if (state.currentScreen === 'home') renderHome();
+  if (state.currentScreen === 'mascota') renderMascota();
+  if (celebrate && newIdx > prevIdx) setTimeout(() => triggerLevelUp(newIdx), 500);
+}
+function triggerLevelUp(idx) {
+  const animal = state.user?.zodiac?.animal || '🦁';
+  const evos = ZODIAC_EVOS[animal] || ['🥚','🐣','🐥','🐦','🦅'];
+  document.getElementById('luEmoji').textContent = evos[idx] || animal;
+  document.getElementById('luTitle').textContent = '¡Subiste a Nivel ' + (idx+1) + '!';
+  document.getElementById('luSub').textContent = 'Tu mascota evolucionó a "' + EVO_LEVELS[idx].name + '" gracias a tu esfuerzo constante.';
+  document.getElementById('levelupOverlay').classList.add('show');
 }
 
-// ======= AGENDA =======
+/* ============================================================
+   HOME
+   ============================================================ */
+function updateHomeHeader() {
+  if (!state.user) return;
+  const animal = state.user.zodiac ? state.user.zodiac.animal : '🌊';
+  const h = new Date().getHours();
+  const greet = h < 12 ? 'Buenos días' : h < 19 ? 'Buenas tardes' : 'Buenas noches';
+  document.getElementById('home-greeting').textContent = greet;
+  document.getElementById('home-name').textContent = state.user.name;
+  document.getElementById('home-avatar').textContent = animal;
+  document.getElementById('home-streak').textContent = state.daysActive || 1;
+  document.getElementById('apoyo-avatar').textContent = animal;
+  document.getElementById('apoyo-greeting').textContent = 'Hola, ' + state.user.name;
+  document.getElementById('mascota-screen-emoji').textContent = animal;
+  document.getElementById('homeAssistantAv').textContent = animal;
+  document.getElementById('apoyo-chat-av').textContent = animal;
+}
+
+function computeBalance() {
+  const today = todayStr(0);
+  const todayTasks = state.tasks.filter(t => t.date === today);
+  const doneToday = todayTasks.filter(t => t.done).length;
+  const catTareas = todayTasks.length ? doneToday/todayTasks.length : 0;
+  const catAnimo = state.todayEmotion ? 1 : 0;
+  const catMascota = (state.xpToday||0) > 0 ? 1 : 0;
+  const catBienestar = state.bienestarVisitedToday ? 1 : 0;
+  return { catTareas, catAnimo, catMascota, catBienestar, score: ((catTareas+catAnimo+catMascota+catBienestar)/4*10) };
+}
+
+function renderRing() {
+  const b = computeBalance();
+  const R = 80, C = 2*Math.PI*R;
+  const slot = (C/4) - 12;
+  const minNub = slot * 0.06;
+  [{id:'seg-tareas',v:b.catTareas},{id:'seg-animo',v:b.catAnimo},{id:'seg-mascota',v:b.catMascota},{id:'seg-bienestar',v:b.catBienestar}].forEach(s => {
+    const len = Math.max(minNub, slot*s.v);
+    const el = document.getElementById(s.id);
+    el.setAttribute('stroke-dasharray', `${slot} ${C}`);
+    el.style.transition = 'none';
+    el.setAttribute('stroke-dashoffset', slot);
+    void el.getBoundingClientRect();
+    el.style.transition = 'stroke-dashoffset 1.1s cubic-bezier(.34,1.56,.64,1)';
+    requestAnimationFrame(() => el.setAttribute('stroke-dashoffset', slot-len));
+  });
+  animateNumber('ringNum', b.score, 1);
+
+  const cap = document.getElementById('ringCaption');
+  if (b.score === 0) cap.textContent = 'Tu equilibrio crece con cada cosa real que hagas hoy';
+  else if (b.score < 5) cap.textContent = '¡Vas bien! Sigue sumando pequeñas acciones';
+  else if (b.score < 9) cap.textContent = '¡Excelente avance hoy! Sigue así';
+  else cap.textContent = '¡Día redondo! Cuidaste cada parte de ti 🌊';
+}
+
+function animateNumber(id, target, decimals=0) {
+  const el = document.getElementById(id);
+  const start = parseFloat(el.textContent.replace(/[^\d.]/g,'')) || 0;
+  const dur = 800; const t0 = performance.now();
+  function step(t) {
+    const p = Math.min(1,(t-t0)/dur), eased = 1-Math.pow(1-p,3);
+    el.textContent = (start+(target-start)*eased).toFixed(decimals);
+    if (p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function renderHome() {
+  updateHomeHeader();
+  renderRing();
+
+  const today = todayStr(0);
+  const todayTasks = state.tasks.filter(t => t.date === today);
+  const pending = todayTasks.filter(t => !t.done);
+  const msgEl = document.getElementById('homeAssistantMsg');
+  if (state.tasks.length === 0) {
+    msgEl.textContent = '¡Bienvenido/a! Agrega tu primera tarea para empezar a organizar tu día 🌊';
+  } else if (pending.length > 0) {
+    msgEl.textContent = `Tienes ${pending.length} tarea${pending.length>1?'s':''} pendiente${pending.length>1?'s':''} para hoy. ¡Vamos paso a paso! 💪`;
+  } else if (!state.todayEmotion) {
+    msgEl.textContent = '¡Ya completaste tus tareas de hoy! ¿Quieres contarme cómo te sientes? 💙';
+  } else {
+    msgEl.textContent = '¡Excelente día! Has avanzado mucho. Estoy orgulloso/a de ti 🌊';
+  }
+
+  const listEl = document.getElementById('homeTodayList');
+  if (!todayTasks.length) {
+    listEl.innerHTML = `<div class="card"><div class="empty-state"><span class="empty-emoji">🌊</span><div class="empty-title">Aún no tienes tareas hoy</div><div class="empty-text">Agrégalas desde Agenda y aparecerán organizadas aquí.</div><button class="empty-cta" style="background:var(--coral);color:white;" onclick="goTo('agenda')">Agregar tarea ➕</button></div></div>`;
+  } else {
+    listEl.innerHTML = `<div class="card" style="padding:8px 14px;">` + todayTasks.slice(0,4).map(t => `
+      <div class="stat-row" onclick="goTo('agenda')">
+        <div class="stat-icon" style="background:var(--coral-tint);opacity:${t.done?0.5:1}">${t.done?'✅':(t.icon||'📘')}</div>
+        <div class="stat-mid"><div class="stat-label" style="${t.done?'text-decoration:line-through;color:var(--ink-mute);':''}">${t.name}</div><div style="font-size:11px;color:var(--ink-mute);font-weight:700;margin-top:2px;">${t.subject} · ${t.time||''}</div></div>
+      </div>`).join('') + `</div>`;
+  }
+
+  EMOTIONS.forEach(em => { const elp = document.getElementById('hmood-'+em.e); if (elp) elp.classList.toggle('sel', state.todayEmotion===em.e); });
+}
+
+function logEmotion(emoji) {
+  const em = EMOTIONS.find(x => x.e === emoji);
+  const wasFirstToday = !state.todayEmotion;
+  state.todayEmotion = emoji;
+  state.moodHistory[todayStr(0)] = emoji;
+  save();
+
+  document.querySelectorAll('.mood-pill').forEach(p => p.classList.remove('sel'));
+  document.querySelectorAll('.mood-tile').forEach(p => { p.classList.remove('sel'); });
+  const hp = document.getElementById('hmood-'+emoji); if (hp) hp.classList.add('sel');
+  const ap = document.getElementById('amood-'+emoji); if (ap) ap.classList.add('sel');
+
+  document.getElementById('apoyo-chat-av').textContent = state.user?.zodiac?.animal || '🦁';
+  const chat = document.getElementById('apoyoChat');
+  chat.style.background = em.t; chat.style.display = 'flex';
+  const msgEl = document.getElementById('apoyo-chat-msg');
+  msgEl.style.opacity = '0';
+  setTimeout(() => { msgEl.textContent = em.msg; msgEl.style.opacity = '1'; }, 150);
+
+  if (state.currentScreen === 'home') renderHome();
+  if (state.currentScreen === 'apoyo') renderMoodCalendar();
+
+  if (wasFirstToday) { addXP(20); showToast('+20 XP · Emoción registrada 💙'); }
+}
+
+/* ============================================================
+   AGENDA
+   ============================================================ */
 let selectedAgendaDate = todayStr(0);
+const MONTHS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const DAYNAMES_FULL = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 
 function renderAgenda() {
-  renderWeekStrip();
-  renderAgendaTasks();
+  const d = new Date(selectedAgendaDate + 'T12:00:00');
+  const isToday = selectedAgendaDate === todayStr(0);
+  document.getElementById('agenda-day-name').textContent = isToday ? 'Hoy' : DAYNAMES_FULL[d.getDay()];
+  document.getElementById('agenda-month').textContent = MONTHS[d.getMonth()].charAt(0).toUpperCase()+MONTHS[d.getMonth()].slice(1) + ' ' + d.getFullYear();
+  document.getElementById('agenda-day-num').textContent = d.getDate();
+  renderDatePills();
+  renderTimeline();
 }
-
-function renderWeekStrip() {
-  const strip = document.getElementById('week-strip');
+function renderDatePills() {
+  const row = document.getElementById('datePillRow');
   const today = todayStr(0);
-  const dayNames = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  const dayNames = ['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
   let html = '';
-  for (let i = -2; i <= 4; i++) {
-    const d = new Date();
-    d.setDate(d.getDate() + i);
+  for (let i=-1;i<=5;i++) {
+    const d = new Date(); d.setDate(d.getDate()+i);
     const str = d.toISOString().split('T')[0];
-    const isToday = str === today;
-    const isSel = str === selectedAgendaDate;
-    html += `<div class="day-pill ${isToday ? 'today' : ''} ${isSel && !isToday ? 'selected' : ''}" 
-      style="${isSel && !isToday ? 'border:2px solid var(--ocean)' : ''}"
-      onclick="selectDay('${str}')">
-      <span class="day-num">${d.getDate()}</span>
-      <span class="day-name">${dayNames[d.getDay()]}</span>
-    </div>`;
+    const isToday = str===today, isSel = str===selectedAgendaDate;
+    html += `<div class="date-pill ${isSel?'sel':''} ${isToday&&!isSel?'today-ring':''}" onclick="selectDay('${str}')"><div class="dp-num">${d.getDate()}</div><div class="dp-day">${dayNames[d.getDay()]}</div></div>`;
   }
-  strip.innerHTML = html;
+  row.innerHTML = html;
 }
-
-function selectDay(str) {
-  selectedAgendaDate = str;
-  renderWeekStrip();
-  renderAgendaTasks();
+function selectDay(str) { selectedAgendaDate = str; renderAgenda(); }
+function switchAgendaTab(tab) {
+  state.agendaTab = tab;
+  document.getElementById('tab-pendientes').classList.toggle('active', tab==='pendientes');
+  document.getElementById('tab-completadas').classList.toggle('active', tab==='completadas');
+  renderTimeline();
 }
+function renderTimeline() {
+  const wrap = document.getElementById('agendaTimeline');
+  let dayTasks = state.tasks.filter(t => t.date === selectedAgendaDate);
+  dayTasks = dayTasks.filter(t => state.agendaTab==='pendientes' ? !t.done : t.done);
+  dayTasks.sort((a,b) => (a.time||'').localeCompare(b.time||''));
 
-function renderAgendaTasks() {
-  const list = document.getElementById('agenda-tasks-list');
-  const dayTasks = state.tasks.filter(t => t.date === selectedAgendaDate);
   if (!dayTasks.length) {
-    list.innerHTML = '<div class="empty-state"><div class="empty-emoji">📭</div><div class="empty-text">Sin tareas para este día</div></div>';
+    const noTasksAtAll = state.tasks.length === 0;
+    wrap.innerHTML = `<div class="empty-state"><span class="empty-emoji">${state.agendaTab==='pendientes'?'🌊':'📭'}</span>
+      <div class="empty-title">${noTasksAtAll ? 'Tu agenda está vacía' : (state.agendaTab==='pendientes' ? 'Sin tareas pendientes este día' : 'Aún no completas tareas este día')}</div>
+      <div class="empty-text">${noTasksAtAll ? 'Agrega tu primera tarea y aparecerá aquí organizada por fecha y hora.' : '¡Buen trabajo manteniéndote al día!'}</div>
+      ${state.agendaTab==='pendientes' ? '<button class="empty-cta" style="background:var(--ink);color:white;" onclick="openAddTask()">Agregar tarea ➕</button>' : ''}
+      </div>`;
     return;
   }
-  list.innerHTML = dayTasks.map(t => taskHTML(t)).join('');
+  wrap.innerHTML = dayTasks.map(t => `
+    <div class="timeline-row">
+      <div class="tl-time">${t.time||'--:--'}</div>
+      <div class="tl-card p-${t.priority} ${t.done?'done':''}" onclick="toggleTask(${t.id})">
+        <div class="tl-icon">${t.icon||'📘'}</div>
+        <div class="tl-info"><div class="tl-name">${t.name}</div><div class="tl-meta">${t.subject}${t.priority==='urgente'?' · Urgente':t.priority==='examen'?' · Examen':''}</div></div>
+        <div class="tl-check ${t.done?'done-c':''}" onclick="event.stopPropagation();toggleTask(${t.id})"></div>
+      </div>
+    </div>`).join('');
+}
+function toggleTask(id) {
+  const t = state.tasks.find(x => x.id===id);
+  if (!t) return;
+  if (!t.done) { t.done=true; state.tasksCompleted++; addXP(50); showToast('+50 XP · Tarea completada 🎉'); }
+  else { t.done=false; state.tasksCompleted=Math.max(0,state.tasksCompleted-1); state.xp=Math.max(0,state.xp-50); save(); }
+  save();
+  renderTimeline();
+  if (state.currentScreen==='home') renderHome();
+  if (state.currentScreen==='mascota') renderMascota();
 }
 
-// ======= ADD TASK =======
+/* ============================================================
+   ADD TASK MODAL
+   ============================================================ */
 function openAddTask() {
   document.getElementById('new-task-date').value = selectedAgendaDate;
+  document.getElementById('new-task-time').value = '15:00';
+  document.getElementById('new-task-name').value = '';
+  document.getElementById('new-task-subject').value = '';
+  document.querySelectorAll('#subjectChips .chip').forEach(c=>c.classList.remove('sel'));
+  document.querySelectorAll('.priority-opt').forEach((p,i)=>p.classList.toggle('sel', i===0));
+  selectedSubject = null;
   document.getElementById('modal-task').classList.add('open');
 }
 function closeAddTask() { document.getElementById('modal-task').classList.remove('open'); }
-
+function selectPriority(el) { document.querySelectorAll('.priority-opt').forEach(p=>p.classList.remove('sel')); el.classList.add('sel'); }
 function saveTask() {
   const name = document.getElementById('new-task-name').value.trim();
-  const subject = document.getElementById('new-task-subject').value.trim();
-  const date = document.getElementById('new-task-date').value;
-  const priority = document.getElementById('new-task-priority').value;
-  if (!name) { showToast('Escribe el nombre de la tarea'); return; }
-  const newTask = { id: Date.now(), name: name || 'Tarea', subject: subject || 'General', date: date || todayStr(0), priority, done: false };
-  state.tasks.push(newTask);
+  if (!name) { showToast('Escribe el nombre de la tarea ✏️'); return; }
+  const subject = document.getElementById('new-task-subject').value.trim() || 'General';
+  const date = document.getElementById('new-task-date').value || todayStr(0);
+  const time = document.getElementById('new-task-time').value || '12:00';
+  const priority = document.querySelector('.priority-opt.sel')?.dataset.p || 'normal';
+  const icon = selectedSubject?.icon || '📘';
+  state.tasks.push({ id: Date.now(), name, subject, icon, date, time, priority, done:false });
   save();
   closeAddTask();
+  selectedAgendaDate = date;
   renderAgenda();
-  document.getElementById('new-task-name').value = '';
-  document.getElementById('new-task-subject').value = '';
+  if (state.currentScreen==='home') renderHome();
   showToast('Tarea agregada ✅');
 }
 
-// ======= EMOTIONS =======
-const EMOTION_MSGS = {
-  '😊': '¡Me alegra saberlo! Tu energía positiva es contagiosa. Aprovecha este estado para avanzar en tus tareas. ¡Tú puedes! 💛',
-  '😰': 'El estrés escolar es difícil, pero lo puedes manejar. Respira profundo y recuerda: una cosa a la vez. Prueba el ejercicio de respiración 🌊',
-  '😔': 'Está bien sentirse triste. No tienes que estar bien todo el tiempo. Estoy aquí contigo. Tómate tu tiempo 💙',
-  '😠': 'El enojo es válido. Antes de actuar, respira. A veces solo necesitas que alguien te escuche. Aquí estoy 🫂',
-  '😴': 'Tu cuerpo te está pidiendo descanso. Dormir bien es tan importante como estudiar. Si puedes, descansa un poco hoy 💤',
-  '😟': 'La ansiedad hace que todo parezca más grande. Vamos paso a paso. Primero el ejercicio de respiración, luego pensamos juntos 🌊',
-};
-
-function selectEmotion(el, emoji, label, msg) {
-  document.querySelectorAll('.em-btn').forEach(b => b.classList.remove('sel'));
-  el.classList.add('sel');
-  const animal = state.user?.zodiac?.animal || '🌊';
-  const chat = document.getElementById('apoyo-chat');
-  const msgEl = document.getElementById('apoyo-chat-msg');
-  document.getElementById('apoyo-chat-av').textContent = animal;
-  chat.style.display = 'block';
-  msgEl.style.opacity = '0';
-  setTimeout(() => { msgEl.textContent = msg; msgEl.style.opacity = '1'; }, 200);
-  if (!state.todayEmotion) {
-    state.todayEmotion = emoji;
-    addXP(20);
-    showToast('+20 XP por registrar tu emoción 💙');
+/* ============================================================
+   APOYO / MOOD CALENDAR
+   ============================================================ */
+function renderApoyo() {
+  EMOTIONS.forEach(em => { const el = document.getElementById('amood-'+em.e); if (el) el.classList.toggle('sel', state.todayEmotion===em.e); });
+  if (state.todayEmotion) {
+    const em = EMOTIONS.find(x=>x.e===state.todayEmotion);
+    document.getElementById('apoyo-chat-av').textContent = state.user?.zodiac?.animal || '🦁';
+    const chat = document.getElementById('apoyoChat');
+    chat.style.background = em.t; chat.style.display = 'flex';
+    document.getElementById('apoyo-chat-msg').textContent = em.msg;
   }
+  renderMoodCalendar();
 }
+const EMOTION_COLOR = {}; EMOTIONS.forEach(em => EMOTION_COLOR[em.e] = {bg: em.t, dot: em.c});
 
-function quickEmotion(el, label) {
-  document.querySelectorAll('.quick-em-btn').forEach(b => b.classList.remove('sel'));
-  el.classList.add('sel');
-  const emoji = label.split(' ')[0];
-  const msgs = {
-    '😊': '¡Excelente! Ese ánimo positivo también ayuda a los que te rodean 💛',
-    '😰': 'Tranquilo/a. Respira. Una tarea a la vez. Puedes hacerlo 🌊',
-    '😔': 'Estoy aquí contigo. No estás solo/a en esto 💙',
-    '😠': 'Respira antes de actuar. El enojo pasa, tú te quedas 🫂',
-    '😴': 'Tu cuerpo habla. Escúchalo. El descanso también es productivo 💤',
-    '🚀': '¡Eso es! ¡Aprovecha esa energía! Hoy es un gran día 🚀',
-  };
-  const msg = msgs[emoji] || '¡Gracias por compartir cómo te sientes! 💙';
-  const animal = state.user?.zodiac?.animal || '🌊';
-  document.getElementById('home-chat-av').textContent = animal;
-  document.getElementById('home-chat-msg').textContent = msg;
-  document.getElementById('home-emotion-response').style.display = 'block';
-  if (!state.todayEmotion) {
-    state.todayEmotion = emoji;
-    addXP(20);
-    showToast('+20 XP por registrar tu emoción 💙');
+function renderMoodCalendar() {
+  const grid = document.getElementById('moodCalGrid');
+  const today = new Date();
+  const startOfWeek = new Date(today); startOfWeek.setDate(today.getDate() - today.getDay() - 14);
+  let html = ''; const counts = {}; let anyData = false;
+  for (let i=0;i<21;i++) {
+    const d = new Date(startOfWeek); d.setDate(startOfWeek.getDate()+i);
+    const str = d.toISOString().split('T')[0];
+    const mood = state.moodHistory[str];
+    const isToday = str === todayStr(0);
+    if (d > today) { html += `<div class="mc-tile empty-slot"></div>`; continue; }
+    if (mood) { counts[mood]=(counts[mood]||0)+1; anyData = true; }
+    const bg = mood ? EMOTION_COLOR[mood].bg : 'var(--sand)';
+    html += `<div class="mc-tile ${isToday?'is-today':''}" style="background:${bg}">${mood||''}</div>`;
   }
-}
+  grid.innerHTML = html;
 
-// ======= BREATHING =======
-let breathTimer = null;
-function startBreath() {
-  if (state.breathRunning) {
-    clearTimeout(breathTimer);
-    state.breathRunning = false;
-    const circle = document.getElementById('breath-circle');
-    circle.classList.remove('inhale','exhale');
-    document.getElementById('breath-text').textContent = 'Toca para empezar';
+  const sumWrap = document.getElementById('mcSummaryWrap');
+  if (!anyData) {
+    sumWrap.innerHTML = `<div class="empty-state" style="padding:18px 8px 4px;"><span class="empty-emoji" style="font-size:30px;">📊</span><div class="empty-title" style="font-size:13px;">Aún no tienes registros</div><div class="empty-text">Marca cómo te sientes arriba para empezar tu patrón emocional.</div></div>`;
     return;
   }
-  state.breathRunning = true;
-  runBreathCycle();
+  let topMood=null, topCount=0;
+  Object.keys(counts).forEach(m => { if (counts[m]>topCount) { topCount=counts[m]; topMood=m; } });
+  const em = EMOTIONS.find(x=>x.e===topMood);
+  sumWrap.innerHTML = `<div class="mc-summary" style="background:${em.t}"><div class="mc-summary-emoji">${topMood}</div><div><div class="mc-summary-word" style="color:${em.c}">Mayormente ${em.l.toLowerCase()}</div><div class="mc-summary-sub">Registraste ${topCount} día${topCount>1?'s':''} así recientemente</div></div></div>`;
 }
 
+/* ============================================================
+   BREATHING
+   ============================================================ */
+let breathTimer = null;
+function startBreath() {
+  if (state.breathRunning) { clearTimeout(breathTimer); state.breathRunning=false; const c=document.getElementById('breath-circle'); c.classList.remove('inhale','exhale'); document.getElementById('breath-text').textContent='Toca para empezar'; return; }
+  state.breathRunning = true; runBreathCycle();
+}
 function runBreathCycle() {
   if (!state.breathRunning) return;
-  const circle = document.getElementById('breath-circle');
-  const text = document.getElementById('breath-text');
-  // Inhale 4s
-  circle.classList.remove('exhale');
-  circle.classList.add('inhale');
-  text.textContent = 'Inhala... (4s)';
+  const c = document.getElementById('breath-circle'), t = document.getElementById('breath-text');
+  c.classList.remove('exhale'); c.classList.add('inhale'); t.textContent='Inhala... (4s)';
   breathTimer = setTimeout(() => {
     if (!state.breathRunning) return;
-    // Hold 7s
-    text.textContent = 'Mantén... (7s)';
+    t.textContent='Mantén... (7s)';
     breathTimer = setTimeout(() => {
       if (!state.breathRunning) return;
-      // Exhale 8s
-      circle.classList.remove('inhale');
-      circle.classList.add('exhale');
-      text.textContent = 'Exhala... (8s)';
-      breathTimer = setTimeout(() => {
-        if (state.breathRunning) runBreathCycle();
-      }, 8000);
+      c.classList.remove('inhale'); c.classList.add('exhale'); t.textContent='Exhala... (8s)';
+      breathTimer = setTimeout(() => { if (state.breathRunning) runBreathCycle(); }, 8000);
     }, 7000);
   }, 4000);
 }
 
-// ======= MASCOTA SCREEN =======
+/* ============================================================
+   MASCOTA
+   ============================================================ */
 function renderMascota() {
   if (!state.user?.zodiac) return;
-  const animal = state.user.zodiac.animal;
-  const animalName = state.user.zodiac.animalName;
+  const animal = state.user.zodiac.animal, animalName = state.user.zodiac.animalName;
   const level = getCurrentLevel();
-  document.getElementById('mascota-screen-emoji').textContent = animal;
+  const evos = ZODIAC_EVOS[animal] || ['🥚','🐣','🐥','🐦','🦅'];
+
+  document.getElementById('mascota-screen-emoji').textContent = evos[level.idx] || animal;
   document.getElementById('mascota-screen-name').textContent = 'Tu ' + animalName;
-  document.getElementById('mascota-screen-level').textContent = 'Nivel ' + (level.idx+1) + ' · ' + level.name;
+  document.getElementById('mascota-screen-sub').textContent = 'Nivel ' + (level.idx+1) + ' · ' + level.name;
+  document.getElementById('levelInfoName').textContent = level.name;
   document.getElementById('stat-xp').textContent = state.xp;
   document.getElementById('stat-days').textContent = state.daysActive;
   document.getElementById('stat-tasks').textContent = state.tasksCompleted;
-  renderEvoTimeline(animal, level.idx);
-}
 
-function renderEvoTimeline(animal, currentIdx) {
-  const evos = ZODIAC_EVOS[animal] || ['🥚','🐣','🐥','🐦','🦅'];
-  const container = document.getElementById('evo-timeline');
-  container.innerHTML = EVO_LEVELS.map((lv, i) => {
-    const isCurrent = i === currentIdx;
-    const isLocked = i > currentIdx;
-    const evoAnimal = evos[i] || animal;
-    return `<div class="evo-item ${isCurrent ? 'current' : ''} ${isLocked ? 'locked' : ''}">
-      <div class="evo-animal">${evoAnimal}</div>
-      <div class="evo-info">
-        <div class="evo-name">${lv.name}</div>
-        <div class="evo-req">${lv.req}</div>
-      </div>
-      <div class="evo-badge ${isLocked ? 'evo-badge-locked' : 'evo-badge-current'}">
-        ${isCurrent ? 'Actual ✓' : isLocked ? '🔒' : '✓'}
-      </div>
+  const nextXP = level.idx>=4 ? level.xp : EVO_LEVELS[level.idx+1].xp;
+  const prevXP = level.xp;
+  const pct = level.idx>=4 ? 100 : Math.round((state.xp-prevXP)/(nextXP-prevXP)*100);
+  document.getElementById('levelInfoXp').textContent = state.xp + ' / ' + nextXP + ' XP';
+  document.getElementById('levelProgressFill').style.width = pct + '%';
+  document.getElementById('levelRingNum').textContent = level.idx+1;
+
+  const R=42, C=2*Math.PI*R;
+  const fillEl = document.getElementById('levelRingFill');
+  fillEl.setAttribute('stroke-dasharray', C);
+  fillEl.style.transition='none';
+  fillEl.setAttribute('stroke-dashoffset', C);
+  void fillEl.getBoundingClientRect();
+  fillEl.style.transition='stroke-dashoffset 1.1s cubic-bezier(.34,1.56,.64,1)';
+  requestAnimationFrame(() => fillEl.setAttribute('stroke-dashoffset', C-(C*pct/100)));
+
+  document.getElementById('evo-timeline').innerHTML = EVO_LEVELS.map((lv,i) => {
+    const isCurrent = i===level.idx, isLocked = i>level.idx;
+    return `<div class="evo-item2 ${isCurrent?'current':''} ${isLocked?'locked':''}">
+      <div class="evo-icon2">${evos[i]||animal}</div>
+      <div style="flex:1;"><div class="evo-name2">${lv.name}</div><div class="evo-req2">${lv.xp} XP</div></div>
+      <div class="evo-badge2" style="background:${isCurrent?'var(--gold-tint)':isLocked?'var(--sand)':'var(--success-tint)'};color:${isCurrent?'var(--gold-deep)':isLocked?'var(--ink-mute)':'var(--success)'}">${isCurrent?'Actual':isLocked?'🔒':'✓'}</div>
     </div>`;
   }).join('');
+
+  document.getElementById('xpWaysList').innerHTML = [
+    {i:'✅',t:'Completar una tarea',p:'+50 XP',bg:'var(--coral-tint)'},
+    {i:'💙',t:'Registrar tu emoción',p:'+20 XP',bg:'var(--lavender-tint)'},
+    {i:'📅',t:'Entrar a la app cada día',p:'+15 XP',bg:'var(--ocean-tint)'},
+    {i:'🌿',t:'Usar sección de bienestar',p:'+10 XP',bg:'var(--teal-tint)'},
+    {i:'🔥',t:'Semana completa sin faltar',p:'+150 XP',bg:'var(--gold-tint)'}
+  ].map(w => `<div class="stat-row"><div class="stat-icon" style="background:${w.bg}">${w.i}</div><div class="stat-mid" style="padding-top:2px;"><div class="stat-label">${w.t}</div></div><div class="stat-val" style="color:var(--gold-deep)">${w.p}</div></div>`).join('');
 }
 
-// ======= BIENESTAR =======
+/* ============================================================
+   BIENESTAR
+   ============================================================ */
 function switchBienestar(el, section) {
-  document.querySelectorAll('.tab-pill').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-pill3').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
-  document.querySelectorAll('.bienestar-section').forEach(s => s.classList.remove('active'));
-  document.getElementById('bsec-' + section).classList.add('active');
-  addXP(10);
+  document.querySelectorAll('.bienestar-section2').forEach(s => s.classList.remove('active'));
+  document.getElementById('bsec-'+section).classList.add('active');
 }
 
-const TRACKS = [
-  {emoji:'🌊',title:'Sonidos del océano',sub:'Relajación'},
-  {emoji:'🌧️',title:'Lluvia suave',sub:'Concentración'},
-  {emoji:'🎵',title:'Lo-fi beats',sub:'Estudio'},
-  {emoji:'🌳',title:'Bosque tranquilo',sub:'Ansiedad'},
-];
-let currentTrack = 0;
-
-function selectTrack(emoji, title, sub) {
-  document.querySelector('.music-emoji').textContent = emoji;
-  document.querySelector('.music-title').textContent = title;
-  document.querySelector('.music-sub').textContent = sub;
-  state.musicPlaying = true;
-  document.getElementById('play-btn').textContent = '⏸️';
-  showToast('Reproduciendo: ' + title);
+let currentTrack = 0, musicInterval = null, musicSeconds = 0;
+function selectTrack(i) {
+  currentTrack = i;
+  const t = TRACKS[i];
+  document.getElementById('mpDisc').textContent = t.emoji;
+  document.getElementById('mpTitle').textContent = t.title;
+  document.getElementById('mpSub').textContent = t.sub + ' · 15 minutos';
+  musicSeconds = 0;
+  if (!state.musicPlaying) togglePlay();
+  showToast('Reproduciendo: ' + t.title + ' 🎵');
 }
-
 function togglePlay() {
   state.musicPlaying = !state.musicPlaying;
   document.getElementById('play-btn').textContent = state.musicPlaying ? '⏸️' : '▶️';
+  document.getElementById('mpDisc').classList.toggle('playing', state.musicPlaying);
+  if (state.musicPlaying) {
+    musicInterval = setInterval(() => {
+      musicSeconds++;
+      document.getElementById('mpFill').style.width = Math.min(100, musicSeconds/900*100)+'%';
+      const m=Math.floor(musicSeconds/60), s=musicSeconds%60;
+      document.getElementById('mpTime').textContent = m+':'+String(s).padStart(2,'0');
+      if (musicSeconds>=900) togglePlay();
+    }, 1000);
+  } else { clearInterval(musicInterval); }
 }
-function prevTrack() {
-  currentTrack = (currentTrack - 1 + TRACKS.length) % TRACKS.length;
-  const t = TRACKS[currentTrack];
-  selectTrack(t.emoji, t.title, t.sub);
-}
-function nextTrack() {
-  currentTrack = (currentTrack + 1) % TRACKS.length;
-  const t = TRACKS[currentTrack];
-  selectTrack(t.emoji, t.title, t.sub);
-}
+function prevTrack() { currentTrack=(currentTrack-1+TRACKS.length)%TRACKS.length; selectTrack(currentTrack); }
+function nextTrack() { currentTrack=(currentTrack+1)%TRACKS.length; selectTrack(currentTrack); }
 
-// ======= TOAST =======
+/* ============================================================
+   STORY READER
+   ============================================================ */
+function openStory(id) {
+  const s = STORIES.find(x => x.id === id);
+  if (!s) return;
+  document.getElementById('readerHero').style.background = s.color;
+  document.getElementById('readerEmoji').textContent = s.emoji;
+  document.getElementById('readerTitle').textContent = s.title;
+  document.getElementById('readerMeta').textContent = s.theme + ' · ' + s.read + ' min de lectura';
+  document.getElementById('readerBody').innerHTML = s.p.map(par => `<p class="reader-p">${par}</p>`).join('') + `<p class="reader-moral">${s.moral}</p>`;
+  document.getElementById('readerBody').scrollTop = 0;
+  document.getElementById('screen-storyreader').classList.add('open');
+}
+function closeStory() { document.getElementById('screen-storyreader').classList.remove('open'); }
+
+/* ============================================================
+   TOAST
+   ============================================================ */
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2600);
 }
 
-// ======= PWA INSTALL =======
+/* ============================================================
+   PWA INSTALL
+   ============================================================ */
 let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  document.getElementById('installBanner').classList.add('show');
-});
-document.getElementById('installBtn').addEventListener('click', async () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    deferredPrompt = null;
-    document.getElementById('installBanner').classList.remove('show');
-  }
-});
-
-// Service Worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
-}
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; document.getElementById('installBanner').classList.add('show'); });
+document.getElementById('installBtn').addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; document.getElementById('installBanner').classList.remove('show'); } });
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(()=>{}); }
 </script>
 </body>
 </html>
